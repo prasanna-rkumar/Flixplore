@@ -39,14 +39,14 @@ export default function Home() {
             })}
           </div>
         </div>
-        <div className="col-span-2 sticky movie-details flex flex-col gap-2 justify-start items-start h-full p-2">
+        <div className="col-span-2 sticky h-screen movie-details movie-details flex flex-col gap-2 justify-start items-start p-2">
           <div style={{ paddingTop: "56.25%" }}>
             <div className="absolute top-0">
               <img className="pl-6" src="https://image.tmdb.org/t/p/original/rcUcYzGGicDvhDs58uM44tJKB9F.jpg" />
               <img className="absolute shadow-lg rounded" style={{ maxWidth: "33.33%", bottom: "-33.33%" }} src="https://image.tmdb.org/t/p/w500/lPsD10PP4rgUGiGR4CCXA6iY0QQ.jpg" />
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-1 text-white p-1 w-full" style={{ marginTop: "12%" }}>
+          <div className="flex flex-1 flex-col gap-1 text-white p-1 w-full" style={{ marginTop: 16 }}>
             <h2 className="text-xl font-semibold ">Raya and the Last Dragon</h2>
             <span className="text-sm font-medium text-gray-500">Drama, Sci-fi</span>
             <div className="flex flex-row justify-between text-center gap-6 mt-4">
@@ -56,7 +56,7 @@ export default function Home() {
             <div className="flex flex-row justify-between mt-4">
               <SecondaryDetail label="Year" value="2020" />
               <SecondaryDetail label="Rating" value="8.6">
-                <AiFillStar className="inline relative bottom-0.5" color="yellow" />
+                <AiFillStar className="inline relative bottom-0.5" color="#FFD700" />
               </SecondaryDetail>
             </div>
             <div className="mt-8 pt-6 border-t-2 border-gray-500">

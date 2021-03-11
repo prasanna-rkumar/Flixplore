@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { FaUserCircle } from 'react-icons/fa'
 
 const Header = () => {
-  return <div className="sticky top-0 z-40 text-white px-2 border-b-2 border-gray-500 border-opacity-50 appbar">
+  return <div className="sticky top-0 z-40 text-white px-2 border-b-2 border-gray-500 border-opacity-50 appbar py-1">
     <div className="flex flex-row justify-between items-center p-2 max-w-screen-2xl w-full m-auto">
       <Link href="/">
         <a className="text-2xl font-bold">
