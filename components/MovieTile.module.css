@@ -1,0 +1,5 @@
+.active {
+  bottom: 8px;
+  border: 0.25rem solid #db2777;
+  box-shadow: 0px 2px 6px 3px #f472b6;
+}
