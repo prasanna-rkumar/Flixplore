@@ -1,7 +1,7 @@
 const Dropdown = ({ label }) => {
   return <div className="text-white group inline-block text-opacity-70 hover:text-opacity-100">
     <button
-      className="font-normal py-2 px-4 rounded inline-flex items-center"
+      className="font-normal py-2 px-2 rounded inline-flex items-center"
     >
       <span className="mr-1">{label}</span>
       <svg

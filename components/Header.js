@@ -9,7 +9,7 @@ const Header = () => {
           <div className="flex flex-row justify-start gap-2 items-center">
             <picture>
               <source srcSet="/logo.png" />
-              <img className="max-w-xs max-h-10" src="OtherImage.png" alt="IfItDoesntMatchAnyMedia" />
+              <img className="max-w-xs max-h-10" alt="" />
             </picture>
             <span >Flixplore</span>
           </div>
