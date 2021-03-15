@@ -5,7 +5,7 @@ const get = ({ endpoint, params }) => {
 }
 
 export const END_POINTS = {
-  discover: "discover/movie/",
+  discover: "discover/movie",
   movie: "movie/",
 }
 
