@@ -9,6 +9,7 @@ export default function useWindowDimensions() {
       setDimensions({ width, height })
     }
 
+    handleResize()
     window.addEventListener('load', () => handleResize)
     window.addEventListener('resize', handleResize)
     return () => {

@@ -9,10 +9,13 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "immer": "^8.0.1",
     "next": "10.0.8",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-icons": "^4.2.0"
+    "react-icons": "^4.2.0",
+    "react-query": "^3.12.1",
+    "use-immer": "^0.4.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.5",

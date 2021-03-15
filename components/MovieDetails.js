@@ -2,31 +2,33 @@ import { MdWatchLater } from 'react-icons/md'
 import { BsPlayFill } from 'react-icons/bs'
 import { AiFillStar } from 'react-icons/ai'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useQuery } from 'react-query'
+import API, { END_POINTS } from '../api'
+import { memo } from 'react'
 
+const MovieDetails = memo(({ movieId }) => {
+  const { status, data, error } = useQuery(END_POINTS.movie + movieId, () => API.movie({ movieId }))
+  if (status === 'loading') {
+    return <DetailPlaceholder />
+  }
 
-const MovieDetails = ({ movieID, width }) => {
-  const [movie, setMovie] = useState()
-  useEffect(() => {
-    if (movieID === undefined) return
-    setMovie()
-    axios.get(`https://api.themoviedb.org/3/movie/${movieID}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`).then(({ data }) => {
-      setTimeout(() => setMovie(data), 300)
-    }).catch(err => alert(err))
-  }, [movieID])
-  if (movie == undefined) return <DetailPlaceholder />
+  if (status === 'error') {
+    return <span>Error: {error.message}</span>
+  }
+
+  let movie = data.data
+
   return <>
     <div className="top-0 w-full max-w-lg m-auto">
       <div className="pl-6">
         <Image width={1280} height={720} layout="responsive" alt="Backdrop" src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} />
       </div>
-      <div className="relative bottom-1/4" style={{ maxWidth: "33.33%", minWidth: "33.33%" }}>
+      <div className="relative bottom-1/4 p-2" style={{ maxWidth: "33.33%", minWidth: "33.33%" }}>
         <Image width={200} height={300} layout="responsive" alt="Poster" className="shadow-lg rounded" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
       </div>
 
     </div>
-    <div className="flex flex-1 flex-col gap-1.5 text-white p-1 w-full m-auto max-w-lg relative -top-28" style={width >= 1024 ? { top: "-10%" } : {}}>
+    <div className="flex flex-1 flex-col gap-1.5 text-white w-full m-auto max-w-lg relative p-3" style={{ top: "-15%" }}>
       <h2 className="text-xl font-semibold ">{movie.original_title}</h2>
       <span className="text-sm font-medium text-gray-500">Drama, Romance</span>
       <div className="flex flex-row justify-between text-center gap-6 mt-4">
@@ -47,7 +49,7 @@ const MovieDetails = ({ movieID, width }) => {
       </div>
     </div>
   </>
-}
+})
 
 export default MovieDetails
 
