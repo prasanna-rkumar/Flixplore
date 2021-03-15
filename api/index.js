@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const get = ({ endpoint, params }) => {
-  return axios.get(`https://api.themoviedb.org/3/${endpoint}`, { params })
+  return axios.get("https://api.themoviedb.org/3/" + endpoint, { params })
 }
 
 export const END_POINTS = {
