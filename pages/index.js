@@ -1,69 +1,73 @@
-import { useEffect, } from 'react'
-import Head from 'next/head'
-import { AiOutlineClose } from 'react-icons/ai'
-import { useImmerReducer } from 'use-immer'
-import { useQuery } from 'react-query'
+import { useEffect } from 'react';
+import Head from 'next/head';
+import { AiOutlineClose } from 'react-icons/ai';
+import { useImmerReducer } from 'use-immer';
+import { useQuery } from 'react-query';
 
-import Dropdown from '../components/Dropdown'
-import MovieTile from '../components/MovieTile'
-import MovieDetails from '../components/MovieDetails'
-import styles from '../components/CustomScroll.module.css'
+import Dropdown from '../components/Dropdown';
+import MovieTile from '../components/MovieTile';
+import MovieDetails from '../components/MovieDetails';
+import styles from '../components/CustomScroll.module.css';
 
-import useWindowDimensions from '../utils/useWindowDimensions'
-import API, { END_POINTS } from '../api'
+import useWindowDimensions from '../utils/useWindowDimensions';
+import API, { END_POINTS } from '../api';
 
 const initialState = {
-  details: "hidden",
-  list: "block",
-  displayMedia: "desktop",
+  details: 'hidden',
+  list: 'block',
+  displayMedia: 'desktop',
 
-}
+};
 
 const reducer = (state, action) => {
-  let { type, movieId } = action
-  console.log("reducer called", Date.now())
+  const { type, movieId } = action;
   switch (type) {
     case 'desktop':
-      state.displayMedia = "desktop"
-      return
+      state.displayMedia = 'desktop';
+      return;
     case 'mobile':
-      state.displayMedia = "mobile"
-      return
+      state.displayMedia = 'mobile';
+      return;
     case 'showDetails':
-      state.details = "block"
-      state.activeMovieId = movieId
-      return
+      state.details = 'block';
+      state.activeMovieId = movieId;
+      return;
     case 'hideDetails':
-      state.activeMovieId = movieId
-      state.details = "hidden"
-      return
+      state.activeMovieId = movieId;
+      state.details = 'hidden';
+      return;
     default:
       throw new Error();
   }
-}
+};
 
 export default function Home() {
-  const { width } = useWindowDimensions()
-  const [state, dispatch] = useImmerReducer(reducer, initialState)
-  const { status, data, error } = useQuery(END_POINTS.discover, API.discover)
+  const { width } = useWindowDimensions();
+  const [state, dispatch] = useImmerReducer(reducer, initialState);
+  const { status, data, error } = useQuery(END_POINTS.discover, API.discover);
 
   useEffect(() => {
     if (width >= 1024) {
-      dispatch({ type: "desktop" })
+      dispatch({ type: 'desktop' });
     } else {
-      dispatch({ type: "mobile" })
+      dispatch({ type: 'mobile' });
     }
-  }, [width])
+  }, [width]);
 
   if (status === 'loading') {
-    return <span>Loading...</span>
+    return <span>Loading...</span>;
   }
 
   if (status === 'error') {
-    return <span>Error: {error.message}</span>
+    return (
+      <span>
+        Error:
+        {error.message}
+      </span>
+    );
   }
 
-  let movies = data.data.results
+  const movies = data.data.results;
 
   return (
     <div>
@@ -81,25 +85,22 @@ export default function Home() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2.5 gap-y-4 sm:grid-cols-4">
-            {movies.map((movie, index) => {
-              return <MovieTile
+            {movies.map((movie) => (
+              <MovieTile
                 key={movie.id}
                 movie={movie}
-                onClick={() => dispatch({ type: "showDetails", movieId: movie.id })}
+                onClick={() => dispatch({ type: 'showDetails', movieId: movie.id })}
                 active={state.activeMovieId === movie.id}
               />
-            })}
+            ))}
           </div>
         </div>
-        <div className={`col-span-6 col-start-1 fixed top-0 left-0 flex flex-col gap-2 justify-start items-start mx-auto w-full ${styles.detailScroll} ${styles.bg}  h-screen z-50 overflow-y-scroll lg:col-span-2 lg:col-start-5 lg:col-end-7 lg:sticky lg:h-3/4 lg:max-w-lg ${state.details}`} style={width >= 1024 ? { top: "12.5%", height: "80vh" } : {}}>
-          <AiOutlineClose size={24} className="cursor-pointer font-extrabold fixed top-4 right-6 z-50 text-white lg:invisible" onClick={() => dispatch({ type: "hideDetails" })} />
+        <div className={`col-span-6 col-start-1 fixed top-0 left-0 flex flex-col gap-2 justify-start items-start mx-auto w-full ${styles.detailScroll} ${styles.bg}  h-screen z-50 overflow-y-scroll lg:col-span-2 lg:col-start-5 lg:col-end-7 lg:sticky lg:h-3/4 lg:max-w-lg ${state.details}`} style={width >= 1024 ? { top: '12.5%', height: '80vh' } : {}}>
+          <AiOutlineClose size={24} className="cursor-pointer font-extrabold fixed top-4 right-6 z-50 text-white lg:invisible" onClick={() => dispatch({ type: 'hideDetails' })} />
           <MovieDetails movieId={state.activeMovieId} width={width} />
         </div>
       </main>
-      <footer>
-
-      </footer>
+      <footer />
     </div>
-  )
+  );
 }
-

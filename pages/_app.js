@@ -1,17 +1,26 @@
-import '../styles/globals.css'
-import "tailwindcss/tailwind.css";
-import Header from '../components/Header'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import '../styles/globals.css';
+import 'tailwindcss/tailwind.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import propTypes from 'prop-types';
+import Header from '../components/Header';
 
-let queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
-  return <>
-    <Header />
-    <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
-    </QueryClientProvider>
-  </>
+  return (
+    <>
+      <Header />
+      <QueryClientProvider client={queryClient}>
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        <Component {...pageProps} />
+      </QueryClientProvider>
+    </>
+  );
 }
 
-export default MyApp
+MyApp.propTypes = {
+  Component: propTypes.element.isRequired,
+  pageProps: propTypes.element.isRequired,
+};
+
+export default MyApp;
