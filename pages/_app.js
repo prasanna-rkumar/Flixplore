@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 const queryClient = new QueryClient();
@@ -19,8 +19,8 @@ function MyApp({ Component, pageProps }) {
 }
 
 MyApp.propTypes = {
-  Component: propTypes.element.isRequired,
-  pageProps: propTypes.element.isRequired,
+  Component: PropTypes.func.isRequired,
+  pageProps: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default MyApp;

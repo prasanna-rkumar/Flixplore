@@ -9,13 +9,17 @@
  
 /* Handle */
 .detailScroll::-webkit-scrollbar-thumb {
-  background: #7191b6; 
+  background: #536c8a; 
   border-radius: 10px;
 }
 
 /* Handle on hover */
 .detailScroll::-webkit-scrollbar-thumb:hover {
-  background: #9ecbff; 
+  background: #668ab3; 
+}
+
+.detailScroll::-webkit-scrollbar-thumb:active {
+  background: #b7d9ff; 
 }
 
 .bg {

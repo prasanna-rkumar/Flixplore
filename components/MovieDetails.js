@@ -27,7 +27,7 @@ const MovieDetails = memo(({ movieId }) => {
 
   return (
     <>
-      <div className="top-0 w-full max-w-lg m-auto">
+      <div className="top-0 w-full max-w-lg m-auto pr-1">
         <div className="pl-6">
           <Image width={1280} height={720} layout="responsive" alt="Backdrop" src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} />
         </div>
@@ -41,15 +41,19 @@ const MovieDetails = memo(({ movieId }) => {
         <span className="text-sm font-medium text-gray-500">Drama, Romance</span>
         <div className="flex flex-row justify-between text-center gap-6 mt-4">
           <Button>
-            {' '}
-            <BsPlayFill size={20} className="inline relative right-0.5" style={{ top: -1 }} />
-            {' '}
-            Watch now
-            {' '}
+            <>
+              {' '}
+              <BsPlayFill size={20} className="inline relative right-0.5" style={{ top: -1 }} />
+              {' '}
+              Watch now
+              {' '}
+            </>
           </Button>
           <Button>
-            <MdWatchLater className="inline relative right-1.5" style={{ top: -1 }} />
-            Watch later
+            <>
+              <MdWatchLater className="inline relative right-1.5" style={{ top: -1 }} />
+              Watch later
+            </>
           </Button>
         </div>
         <div className="flex flex-row justify-between mt-4">
@@ -72,12 +76,16 @@ const MovieDetails = memo(({ movieId }) => {
 export default MovieDetails;
 
 MovieDetails.propTypes = {
-  movieId: PropTypes.string.isRequired,
+  movieId: PropTypes.number,
+};
+
+MovieDetails.defaultProps = {
+  movieId: 0,
 };
 
 const DetailPlaceholder = () => (
   <>
-    <div className="animate-pulse" style={{ paddingTop: '56.25%' }}>
+    <div className="animate-pulse pr-1" style={{ paddingTop: '56.25%' }}>
       <div className="absolute top-0">
         <img alt="Backdrop" className="pl-6 invisible" src="https://www.themoviedb.org/t/p/original/52AfXWuXCHn3UjD17rBruA9f5qb.jpg" />
         <div className="w-full absolute pl-6 top-0" style={{ height: '-webkit-fill-available' }}>
@@ -132,7 +140,8 @@ const SecondaryDetail = ({ label, value, children }) => (
 
 SecondaryDetail.propTypes = {
   label: PropTypes.string,
-  value: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
+  value: PropTypes.any,
   children: PropTypes.element,
 };
 
