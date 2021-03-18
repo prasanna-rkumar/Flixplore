@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useQuery } from 'react-query';
 import { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import API, { END_POINTS } from '../api';
+import API, { END_POINTS } from '../../api';
 
 const MovieDetails = memo(({ movieId }) => {
   const fetchMovieDetails = useCallback(() => API.movie({ movieId }), [movieId]);

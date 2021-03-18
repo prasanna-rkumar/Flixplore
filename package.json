@@ -16,7 +16,8 @@
     "react-dom": "17.0.1",
     "react-icons": "^4.2.0",
     "react-query": "^3.12.1",
-    "use-immer": "^0.4.2"
+    "use-immer": "^0.4.2",
+    "zustand": "^3.3.3"
   },
   "devDependencies": {
     "@tailwindcss/jit": "^0.1.1",
