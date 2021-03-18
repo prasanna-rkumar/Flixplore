@@ -12,6 +12,7 @@ module.exports = {
   },
   variants: {
     display: ['group-hover', 'group-focus'],
+    borderRadius: ['group-focus'],
     extend: {
       borderRadius: ['focus'],
       transitionDuration: ['hover', 'focus'],
