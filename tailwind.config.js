@@ -11,11 +11,9 @@ module.exports = {
     },
   },
   variants: {
-    display: ['group-hover', 'group-focus'],
-    borderRadius: ['group-focus'],
+    display: ['group-hover'],
     extend: {
-      borderRadius: ['focus'],
-      transitionDuration: ['hover', 'focus'],
+      display: ['responsive'],
     },
   },
   plugins: [],
