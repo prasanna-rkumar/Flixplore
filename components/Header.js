@@ -1,5 +1,7 @@
 import Link from 'next/link';
+import { useContext } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
+import { AuthContext } from '../context/AuthContext';
 import { SearchProvider } from '../context/SearchContext';
 import SearchBar from './SearchBar';
 
@@ -23,14 +25,41 @@ const Header = () => (
         </SearchProvider>
       </div>
       <div className="flex flex-row gap-3 justify-end">
-        <Link href="/login">
-          <button type="button">
-            <FaUserCircle size="1.75rem" />
-          </button>
-        </Link>
+        <ProfileButton />
       </div>
     </div>
   </div>
 );
 
 export default Header;
+
+const ProfileButton = () => {
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  return (
+    isLoggedIn ? (
+      <div className="relative group">
+        <button type="button">
+          <FaUserCircle size="1.75rem" />
+        </button>
+        <div
+          className="absolute top-10 hidden group-hover:block rounded shadow-lg"
+          style={{
+            background: '#354353',
+          }}
+        >
+          <div className="w-60" />
+          <ul>
+            <li><button type="button">Watch list</button></li>
+            <li><button type="button" onClick={() => setIsLoggedIn(false)}>Logout</button></li>
+          </ul>
+        </div>
+      </div>
+    ) : (
+      <Link href="/login">
+        <button type="button">
+          <FaUserCircle size="1.75rem" />
+        </button>
+      </Link>
+    )
+  );
+};

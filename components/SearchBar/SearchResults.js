@@ -8,7 +8,7 @@ import customScroll from '../RightPane/CustomScroll.module.css';
 import useMoviesStore from '../../store/MoviesStore';
 import { AppContext } from '../../context/AppContext';
 
-const SearchResults = ({ searchTerm }) => {
+const SearchResults = memo(({ searchTerm }) => {
   const { isInputFocus } = useContext(SearchContext);
   const fetchSearchResults = () => API.search(searchTerm);
   const { data, error } = useQuery([END_POINTS.search, searchTerm], fetchSearchResults);
@@ -31,7 +31,7 @@ const SearchResults = ({ searchTerm }) => {
       </div>
     )
   );
-};
+});
 
 SearchResults.propTypes = {
   searchTerm: propTypes.string.isRequired,

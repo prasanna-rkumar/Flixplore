@@ -12,7 +12,7 @@ const SearchBar = () => {
       className="relative rounded-full"
     >
       <SearchInput />
-      <SearchResults searchTerm={searchTerm} />
+      { (searchTerm && searchTerm.length > 0) && <SearchResults searchTerm={searchTerm} />}
     </div>
   );
 };
