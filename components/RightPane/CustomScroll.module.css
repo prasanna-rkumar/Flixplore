@@ -1,24 +1,24 @@
-.detailScroll::-webkit-scrollbar {
+.customScroll::-webkit-scrollbar {
   width: 8px;
 }
 /* Track */
-.detailScroll::-webkit-scrollbar-track {
+.customScroll::-webkit-scrollbar-track {
   background: #354353; 
   border-radius: 10px;
 }
  
 /* Handle */
-.detailScroll::-webkit-scrollbar-thumb {
+.customScroll::-webkit-scrollbar-thumb {
   background: #536c8a; 
   border-radius: 10px;
 }
 
 /* Handle on hover */
-.detailScroll::-webkit-scrollbar-thumb:hover {
+.customScroll::-webkit-scrollbar-thumb:hover {
   background: #668ab3; 
 }
 
-.detailScroll::-webkit-scrollbar-thumb:active {
+.customScroll::-webkit-scrollbar-thumb:active {
   background: #b7d9ff; 
 }
 
