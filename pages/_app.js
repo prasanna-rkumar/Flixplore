@@ -3,7 +3,6 @@ import 'tailwindcss/tailwind.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import PropTypes from 'prop-types';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import Header from '../components/Header';
 import { AppProvider } from '../context/AppContext';
 import { AuthProvider } from '../context/AuthContext';
 
@@ -14,7 +13,6 @@ function MyApp({ Component, pageProps }) {
     <QueryClientProvider client={queryClient}>
       <AppProvider>
         <AuthProvider>
-          <Header />
           {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <Component {...pageProps} />
         </AuthProvider>
