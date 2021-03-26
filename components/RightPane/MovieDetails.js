@@ -1,17 +1,64 @@
 import { MdWatchLater } from 'react-icons/md';
 import { BsPlayFill } from 'react-icons/bs';
 import { AiFillStar } from 'react-icons/ai';
+import { FaRegEye } from 'react-icons/fa';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
-import { memo, useCallback } from 'react';
+import {
+  memo, useCallback, useEffect, useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import API, { END_POINTS } from '../../api';
+import { addMovieToWatchList, selectMovieStatus } from '../../utils/dbHelper';
+import CircularProgressIndicator from '../CircularProgressIndicator';
+
+const WatchLaterButton = ({ movieId }) => {
+  const [isSeen, setSeen] = useState();
+  useEffect(() => {
+    selectMovieStatus(movieId).then(({ data }) => {
+      if (data && data.length > 0) setSeen(data[0].is_seen);
+    }).catch((e) => setSeen(undefined));
+  }, [movieId]);
+
+  if (isSeen === undefined) {
+    return (
+      <Button onClick={() => addMovieToWatchList(movieId)}>
+        <>
+          <FaRegEye className="inline relative right-1.5" style={{ top: -1 }} />
+        </>
+      </Button>
+    );
+  }
+
+  return (
+    isSeen
+      ? (
+        <Button onClick={() => addMovieToWatchList(movieId)}>
+          <>
+            <FaRegEye className="inline relative right-1.5" style={{ top: -1 }} />
+          </>
+        </Button>
+      ) : (
+        <Button onClick={() => addMovieToWatchList(movieId)}>
+          <>
+            <MdWatchLater className="inline relative right-1.5" style={{ top: -1 }} />
+            Watch later
+          </>
+        </Button>
+      )
+  );
+};
+
+WatchLaterButton.propTypes = {
+  movieId: PropTypes.number.isRequired,
+};
 
 const MovieDetails = memo(({ movieId }) => {
   const fetchMovieDetails = useCallback(() => API.movie({ movieId }), [movieId]);
   const { status, data, error } = useQuery(END_POINTS.movie + movieId, fetchMovieDetails);
+
   if (status === 'loading') {
-    return <DetailPlaceholder />;
+    return <CircularProgressIndicator size={10} />;
   }
 
   if (status === 'error') {
@@ -28,7 +75,8 @@ const MovieDetails = memo(({ movieId }) => {
   return (
     <>
       <div className="top-0 w-full max-w-lg m-auto pr-1">
-        <div className="pl-6">
+        <div className="pl-6 relative">
+          <div className="bg-pink-200 rounded-sm text-pink-700 absolute bottom-4 right-0 font-bold text-xs px-0.5 z-10">In Watch Later</div>
           <Image width={1280} height={720} layout="responsive" alt="Backdrop" src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} />
         </div>
         <div className="relative bottom-1/4 p-2" style={{ maxWidth: '33.33%', minWidth: '33.33%' }}>
@@ -49,12 +97,7 @@ const MovieDetails = memo(({ movieId }) => {
               {' '}
             </>
           </Button>
-          <Button>
-            <>
-              <MdWatchLater className="inline relative right-1.5" style={{ top: -1 }} />
-              Watch later
-            </>
-          </Button>
+          <WatchLaterButton movieId={movieId} />
         </div>
         <div className="flex flex-row justify-between mt-4">
           <SecondaryDetail label="Year" value={movie.release_date.substring(0, 4)} />
@@ -83,50 +126,6 @@ MovieDetails.defaultProps = {
   movieId: 0,
 };
 
-const DetailPlaceholder = () => (
-  <>
-    <div className="animate-pulse pr-1" style={{ paddingTop: '56.25%' }}>
-      <div className="absolute top-0">
-        <img alt="Backdrop" className="pl-6 invisible" src="https://www.themoviedb.org/t/p/original/52AfXWuXCHn3UjD17rBruA9f5qb.jpg" />
-        <div className="w-full absolute pl-6 top-0" style={{ height: '-webkit-fill-available' }}>
-          <div className="rounded bg-gray-600 h-full" />
-        </div>
-        <div className="absolute shadow-lg rounded bg-gray-600" style={{ maxWidth: '33.33%', bottom: '-33.33%' }}>
-          <img alt="Poster" className="invisible" src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/8kNruSfhk5IoE4eZOc4UpvDn6tq.jpg" />
-        </div>
-      </div>
-    </div>
-    <div className="animate-pulse flex flex-1 flex-col gap-1.5 text-white p-1 w-full" style={{ marginTop: '14%' }}>
-      <div className="text-xl font-semibold rounded bg-gray-600">
-        <span className="invisible">1</span>
-      </div>
-      <div className="rounded bg-gray-600">
-        <span className="text-sm font-medium text-gray-500 invisible">1</span>
-      </div>
-      <div className="mt-4 invisible h-9" />
-      <div className="flex flex-row justify-between mt-4 gap-x-4">
-        <SecondaryDetail label="Year" value="">
-          <div className="rounded bg-gray-600 h-5">
-            <span className="invisible">2020</span>
-          </div>
-        </SecondaryDetail>
-        <SecondaryDetail label="Rating" value="">
-          <div className="flex flex-row justify-start items-center gap-1.5">
-            <AiFillStar className="inline relative bottom-0.5" color="#FFD700" />
-            <div className="rounded bg-gray-600 h-5 inline flex-1">
-              <span className="invisible">2020</span>
-            </div>
-          </div>
-        </SecondaryDetail>
-      </div>
-      <div className="mt-8 pt-6 border-t-2 border-gray-500">
-        <h4 className="text-lg text-gray-500 font-semibold">Summary</h4>
-        <p className="text-base mt-1 text-gray-300" />
-      </div>
-    </div>
-  </>
-);
-
 const SecondaryDetail = ({ label, value, children }) => (
   <div className="flex-1">
     <h3 className="text-lg text-gray-500 font-semibold">{label}</h3>
@@ -151,8 +150,13 @@ SecondaryDetail.defaultProps = {
   children: <></>,
 };
 
-const Button = ({ children }) => <button type="button" className="w-full rounded-full text-center h-9 bg-pink-400 text-white font-medium hover:bg-pink-600 hover:shadow-lg">{children}</button>;
+const Button = ({ children, onClick }) => <button onClick={onClick} type="button" className="w-full rounded-full text-center h-9 bg-pink-400 text-white font-medium hover:bg-pink-600 hover:shadow-lg">{children}</button>;
 
 Button.propTypes = {
   children: PropTypes.element.isRequired,
+  onClick: PropTypes.func,
+};
+
+Button.defaultProps = {
+  onClick: () => { },
 };
