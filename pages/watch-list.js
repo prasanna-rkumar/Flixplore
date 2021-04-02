@@ -1,18 +1,24 @@
 import { useEffect } from 'react';
-import supabase from '../utils/initSupabase';
-import Header from '../components/Header';
+/* import supabase from '../utils/initSupabase';
+ */import Header from '../components/Header';
 import SEO from '../components/SEO';
+import { useMyWatchList } from '../utils/dbHelper';
+import WatchItem from '../components/WatchItem';
 
 export default function Home() {
+  const { movies } = useMyWatchList();
+
   useEffect(() => {
-    const mySubscription = supabase
+    /* const mySubscription = supabase
       .from('watch_later')
       .on('*', (payload) => {
 
       })
       .subscribe();
-    return () => supabase.removeSubscription(mySubscription);
+    return () => supabase.removeSubscription(mySubscription); */
   }, []);
+
+  if (movies === undefined || movies.length === 0) return <></>;
 
   return (
     <>
@@ -20,17 +26,17 @@ export default function Home() {
       <div>
         <SEO />
         <main className="relative py-4 px-3 items-start max-w-screen-2xl m-auto xl:px-16 mt-2">
-          <section className="grid grid-cols-2 gap-2.5 gap-y-4 sm:grid-cols-4 lg:grid-cols-6">
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value) => (
-              <div
-                tabIndex={0}
-                role="button"
-                onKeyDown={() => { }}
-                key={value}
-                className="relative rounded-lg border-4 cursor-pointer border-transparent hover:border-pink-400 bottom-0 hover:bottom-2 focus:border-pink-600"
-              >
-                <img alt="kong vs gojira" className="rounded" src="https://image.tmdb.org/t/p/w500//pgqgaUx1cJb5oZQQ5v0tNARCeBp.jpg" />
+          <section className="flex flex-row gap-8 mb-4 mx-1 pb-1 border-b-2 border-gray-500">
+            {['ALL', 'TO WATCH', 'WATCHED'].map((value) => (
+              <div className="text-lg relative text-white text-opacity-70 group cursor-pointer" key={value}>
+                <span className="group-hover:text-pink-600">{value}</span>
+                <div className="border-b-2 border-transparent group-hover:border-pink-600 absolute w-full -bottom-1.5" />
               </div>
+            ))}
+          </section>
+          <section className="grid grid-cols-2 gap-2.5 gap-y-4 sm:grid-cols-4 lg:grid-cols-6">
+            {movies.map((movie) => (
+              <WatchItem movie={movie} />
             ))}
           </section>
         </main>
