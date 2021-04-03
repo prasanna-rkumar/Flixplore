@@ -1,0 +1,18 @@
+.filterOption:hover .optionName, .selected {
+  color: #db2777;
+}
+
+.optionHighlight {
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #00000000;
+  position: absolute;
+  width: 100%;
+  bottom: -6px;
+  box-shadow: 0px 0px transparent;
+}
+
+.filterOption:hover .optionHighlight, .selected > .optionHighlight {
+  border-bottom-color: #db2777;
+  box-shadow: 0px 2px 10px 2px #db2777;
+}
