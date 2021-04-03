@@ -12,10 +12,14 @@ import Button from '../Button';
 
 const MovieDetails = memo(({ movieId }) => {
   const fetchMovieDetails = useCallback(() => API.movie({ movieId }), [movieId]);
-  const { status, data, error } = useQuery(END_POINTS.movie + movieId, fetchMovieDetails);
+  const { status, data, error } = useQuery([END_POINTS.movie, movieId], fetchMovieDetails);
 
   if (status === 'loading') {
-    return <CircularProgressIndicator size={10} />;
+    return (
+      <div className="m-auto">
+        <CircularProgressIndicator size={50} />
+      </div>
+    );
   }
 
   if (status === 'error') {
