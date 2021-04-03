@@ -1,0 +1,4 @@
+.watchItem {
+  background: rgb(26, 33, 41);
+  background: linear-gradient(180deg, rgba(26, 33, 41, 0.75) 0%, rgba(39, 63, 92, 0.45) 60%, rgba(115, 160, 214, 0) 100%);
+}
