@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import MovieDetails from './MovieDetails';
 import styles from './CustomScroll.module.css';
 import useMoviesStore from '../../store/MoviesStore';
-import { AppContext } from '../../context/AppContext';
+import { AppContext } from '../../context/HomePageContext';
 
 const RightPane = () => {
   const selectedMovieId = useMoviesStore((state) => state.selectedMovieId);

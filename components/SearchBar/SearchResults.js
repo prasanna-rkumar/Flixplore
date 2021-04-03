@@ -6,7 +6,7 @@ import { SearchContext } from '../../context/SearchContext';
 import styles from './SearchBar.module.css';
 import customScroll from '../RightPane/CustomScroll.module.css';
 import useMoviesStore from '../../store/MoviesStore';
-import { AppContext } from '../../context/AppContext';
+import { AppContext } from '../../context/HomePageContext';
 
 const SearchResults = memo(({ searchTerm }) => {
   const { isInputFocus } = useContext(SearchContext);

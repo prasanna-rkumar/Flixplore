@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { memo, useCallback, useContext } from 'react';
-import { AppContext } from '../../context/AppContext';
+import { AppContext } from '../../context/HomePageContext';
 import useMovieStore from '../../store/MoviesStore';
 
 const MovieTile = memo(({ movie }) => {

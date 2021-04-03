@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import Dropdown from './Dropdown';
 import MovieTile from './MovieTile';
 import API, { END_POINTS } from '../../api';
-import { AppContext } from '../../context/AppContext';
+import { AppContext } from '../../context/HomePageContext';
 
 const LeftPane = () => {
   const { listVisibility } = useContext(AppContext);
