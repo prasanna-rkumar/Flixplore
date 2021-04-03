@@ -23,9 +23,25 @@ export const getMovieStatus = (tmdbID) => {
   return supabase.from('watch_later').select().match({ tmdb_id: tmdbID, user_id: user().id });
 };
 
-export const getMyWatchList = () => {
+export const getMyWatchList = (filter) => {
   if (!user()) return Promise.reject(new Error(undefined));
-  return supabase.from('watch_later').select().match({ user_id: user().id });
+  const match = { user_id: user().id };
+
+  if (filter && filter !== 'ALL') {
+    match.is_seen = filter === 'WATCHED';
+  }
+
+  return supabase.from('watch_later').select().match({ ...match });
+};
+
+export const updateMovieWatchStatus = (tmdbID, status) => {
+  if (!user()) return Promise.reject(new Error(undefined));
+  return supabase.from('watch_later').update({ is_seen: status }).match({ tmdb_id: tmdbID, user_id: user().id });
+};
+
+export const deleteMovieFromWatchList = (tmdbID) => {
+  if (!user()) return Promise.reject(new Error(undefined));
+  return supabase.from('watch_later').delete().match({ tmdb_id: tmdbID, user_id: user().id });
 };
 
 export const useSelectedMovieStatus = () => {
@@ -47,24 +63,20 @@ export const useSelectedMovieStatus = () => {
 
 export const useMyWatchList = () => {
   const [movies, setMovies] = useState();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const [filter, setFilter] = useState('ALL');
 
   useEffect(() => {
-    getMyWatchList().then(({ data }) => {
-      if (data && data.length > 0) setMovies(data);
+    setLoading(true);
+    getMyWatchList(filter).then(({ data }) => {
+      if (data) setMovies(data);
     }).catch((e) => {
       setError(e);
-    });
-  }, []);
+    }).finally(() => setLoading(false));
+  }, [filter]);
 
-  return { movies, error };
+  return {
+    movies, error, filter, setFilter, loading,
+  };
 };
-
-/* export const updateMovieWatchStatus = (tmdbID, status) => {
-
-};
-
-export const deleteMovieFromWatchList = (tmdbID) => {
-
-};
- */

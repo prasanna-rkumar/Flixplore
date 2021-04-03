@@ -4,6 +4,7 @@ import Dropdown from './Dropdown';
 import MovieTile from './MovieTile';
 import API, { END_POINTS } from '../../api';
 import { AppContext } from '../../context/AppContext';
+import CircularProgressIndicator from '../CircularProgressIndicator';
 
 const LeftPane = () => {
   const { listVisibility } = useContext(AppContext);
@@ -29,9 +30,7 @@ const MoviesList = () => {
   const query = useQuery(END_POINTS.discover, API.discover);
   const { data, error, status } = query;
 
-  if (status === 'loading') {
-    return <span>Loading...</span>;
-  }
+  if (status === 'loading') return <CircularProgressIndicator size={50} />;
 
   if (status === 'error') {
     return (

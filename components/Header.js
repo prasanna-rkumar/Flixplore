@@ -53,7 +53,7 @@ const ProfileButton = () => {
           <div className="w-60" />
           <ul>
             <DropdownItem>
-              <Link href="/"><a>Watch list</a></Link>
+              <Link href="/watch-list"><a>Watch list</a></Link>
             </DropdownItem>
             <DropdownItem>
               <button type="button" onClick={signOut}>Logout</button>
