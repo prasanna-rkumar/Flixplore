@@ -6,7 +6,7 @@ import { BsEyeFill } from 'react-icons/bs';
 import { AiFillDelete } from 'react-icons/ai';
 import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
-import API, { END_POINTS } from '../../../api';
+import API, { END_POINTS } from '../../../tmdb-api';
 import CircularProgressIndicator from '../../CircularProgressIndicator';
 import style from './WatchItem.module.css';
 import { deleteMovieFromWatchList, updateMovieWatchStatus } from '../../../utils/dbHelper';

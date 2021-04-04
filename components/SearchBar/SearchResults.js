@@ -1,7 +1,7 @@
 import { memo, useCallback, useContext } from 'react';
 import { useQuery } from 'react-query';
 import propTypes from 'prop-types';
-import API, { END_POINTS } from '../../api';
+import API, { END_POINTS } from '../../tmdb-api';
 import { SearchContext } from '../../context/SearchContext';
 import styles from './SearchBar.module.css';
 import customScroll from '../RightPane/CustomScroll.module.css';

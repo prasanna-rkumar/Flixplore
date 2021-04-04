@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { useContext } from 'react';
 import Dropdown from './Dropdown';
 import MovieTile from './MovieTile';
-import API, { END_POINTS } from '../../api';
+import API, { END_POINTS } from '../../tmdb-api';
 import { HomePageContext } from '../../context/HomePageContext';
 import CircularProgressIndicator from '../CircularProgressIndicator';
 

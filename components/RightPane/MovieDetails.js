@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useQuery } from 'react-query';
 import { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import API, { END_POINTS } from '../../api';
+import API, { END_POINTS } from '../../tmdb-api';
 import CircularProgressIndicator from '../CircularProgressIndicator';
 import WatchBadge from './WatchBadge';
 import WatchLaterButton from './WatchLaterButton';
