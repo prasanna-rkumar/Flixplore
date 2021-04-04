@@ -7,7 +7,7 @@ const now = () => (new Date()).toISOString();
 const user = () => supabase.auth.user();
 
 export const addMovieToWatchList = async (tmdbID) => {
-  await supabase.from('watch_later').insert([
+  await supabase.from('watch_later').upsert([
     {
       user_id: user().id,
       tmdb_id: tmdbID,
@@ -15,7 +15,7 @@ export const addMovieToWatchList = async (tmdbID) => {
       inserted_at: now(),
       updated_at: now(),
     },
-  ], { upsert: true });
+  ]);
 };
 
 export const getMovieStatus = (tmdbID) => {
@@ -47,20 +47,30 @@ export const deleteMovieFromWatchList = (tmdbID) => {
 export const useSelectedMovieStatus = () => {
   const [movieData, setData] = useState();
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(true);
   const selectedMovieId = useMoviesStore((state) => state.selectedMovieId);
 
-  const addMovie = useCallback(() => addMovieToWatchList(selectedMovieId), [selectedMovieId]);
-
-  useEffect(() => {
+  const fetchStatusFromSupabase = useCallback(() => {
+    if (!loading) setLoading(true);
     getMovieStatus(selectedMovieId).then(({ data }) => {
       if (data && data.length > 0) setData(data[0]);
       else setData();
     }).catch((e) => {
       setError(e);
-    });
+    }).finally(() => setLoading(false));
   }, [selectedMovieId]);
 
-  return { movieData, error, addMovie };
+  const addMovie = useCallback(() => {
+    addMovieToWatchList(selectedMovieId).then(() => fetchStatusFromSupabase());
+  }, [selectedMovieId]);
+
+  useEffect(() => {
+    fetchStatusFromSupabase();
+  }, [selectedMovieId]);
+
+  return {
+    movieData, error, addMovie, loading,
+  };
 };
 
 export const useMyWatchList = () => {

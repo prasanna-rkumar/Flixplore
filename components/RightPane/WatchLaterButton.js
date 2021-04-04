@@ -1,10 +1,9 @@
+/* eslint-disable react/forbid-prop-types */
+import propTypes from 'prop-types';
 import { MdWatchLater } from 'react-icons/md';
-import { useSelectedMovieStatus } from '../../utils/dbHelper';
 import Button from '../Button';
 
-const WatchLaterButton = () => {
-  const { movieData, error, addMovie } = useSelectedMovieStatus();
-
+const WatchLaterButton = ({ movieData, error, addMovie }) => {
   if (!movieData || error) {
     return (
       <Button onClick={addMovie}>
@@ -20,3 +19,14 @@ const WatchLaterButton = () => {
 };
 
 export default WatchLaterButton;
+
+WatchLaterButton.propTypes = {
+  movieData: propTypes.any,
+  error: propTypes.any,
+  addMovie: propTypes.func.isRequired,
+};
+
+WatchLaterButton.defaultProps = {
+  movieData: undefined,
+  error: undefined,
+};

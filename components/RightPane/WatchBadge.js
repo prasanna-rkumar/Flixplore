@@ -1,7 +1,7 @@
-import { useSelectedMovieStatus } from '../../utils/dbHelper';
+/* eslint-disable react/forbid-prop-types */
+import propTypes from 'prop-types';
 
-const WatchBadge = () => {
-  const { movieData, error } = useSelectedMovieStatus();
+const WatchBadge = ({ movieData, error }) => {
   if (!movieData || error) return <></>;
   return (
     <div className="bg-pink-200 rounded-sm text-pink-700 absolute top-4 right-0 font-bold text-xs px-0.5 z-10">
@@ -11,3 +11,13 @@ const WatchBadge = () => {
 };
 
 export default WatchBadge;
+
+WatchBadge.propTypes = {
+  movieData: propTypes.any,
+  error: propTypes.any,
+};
+
+WatchBadge.defaultProps = {
+  movieData: undefined,
+  error: undefined,
+};

@@ -9,12 +9,16 @@ import CircularProgressIndicator from '../CircularProgressIndicator';
 import WatchBadge from './WatchBadge';
 import WatchLaterButton from './WatchLaterButton';
 import Button from '../Button';
+import { useSelectedMovieStatus } from '../../utils/dbHelper';
 
 const MovieDetails = memo(({ movieId }) => {
   const fetchMovieDetails = useCallback(() => API.movie({ movieId }), [movieId]);
   const { status, data, error } = useQuery([END_POINTS.movie, movieId], fetchMovieDetails);
+  const {
+    movieData, error: supabaseError, addMovie, loading,
+  } = useSelectedMovieStatus();
 
-  if (status === 'loading') {
+  if (status === 'loading' || loading) {
     return (
       <div className="m-auto">
         <CircularProgressIndicator size={50} />
@@ -37,15 +41,14 @@ const MovieDetails = memo(({ movieId }) => {
     <>
       <div className="top-0 w-full max-w-lg m-auto pr-1">
         <div className="pl-6 relative">
-          <WatchBadge />
+          <WatchBadge movieData={movieData} error={supabaseError} />
           <Image width={1280} height={720} layout="responsive" alt="Backdrop" src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} />
         </div>
         <div className="relative bottom-1/4 p-2" style={{ maxWidth: '33.33%', minWidth: '33.33%' }}>
           <Image width={200} height={300} layout="responsive" alt="Poster" className="shadow-lg rounded" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
         </div>
-
       </div>
-      <div className="flex flex-1 flex-col gap-1.5 text-white w-full m-auto max-w-lg relative p-3" style={{ top: '-15%' }}>
+      <div className="flex flex-1 flex-col gap-1.5 text-white w-full m-auto max-w-lg relative p-3 -top-24">
         <h2 className="text-xl font-semibold ">{movie.original_title}</h2>
         <span className="text-sm font-medium text-gray-500">Drama, Romance</span>
         <div className="flex flex-row justify-between text-center gap-6 mt-4">
@@ -56,7 +59,7 @@ const MovieDetails = memo(({ movieId }) => {
               Watch now
             </a>
           </Button>
-          <WatchLaterButton movieId={movieId} />
+          <WatchLaterButton movieData={movieData} error={supabaseError} addMovie={addMovie} />
         </div>
         <div className="flex flex-row justify-between mt-4">
           <SecondaryDetail label="Year" value={movie.release_date.substring(0, 4)} />

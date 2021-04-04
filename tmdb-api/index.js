@@ -39,7 +39,7 @@ const API = {
   image: ({ movieId }) => {
     const endpoint = END_POINTS.image.replace('{movie_id}', movieId);
     const params = {
-      include_image_language: 'en',
+      include_image_language: 'en,null',
     };
     return get({ endpoint, params });
   },
