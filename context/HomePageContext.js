@@ -28,9 +28,9 @@ const reducer = (state, action) => {
   }
 };
 
-export const AppContext = createContext();
+export const HomePageContext = createContext();
 
-export const AppProvider = ({ children }) => {
+export const HomePageProvider = ({ children }) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const { detailsVisibility, listVisibility } = state;
   const { width } = useWindowDimensions();
@@ -47,15 +47,15 @@ export const AppProvider = ({ children }) => {
   }, [width]);
 
   return (
-    <AppContext.Provider value={{
+    <HomePageContext.Provider value={{
       detailsVisibility, listVisibility, closeDetails, openDetails,
     }}
     >
       {children}
-    </AppContext.Provider>
+    </HomePageContext.Provider>
   );
 };
 
-AppProvider.propTypes = {
-  children: propTypes.element.isRequired,
+HomePageProvider.propTypes = {
+  children: propTypes.instanceOf(Array).isRequired,
 };

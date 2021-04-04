@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { memo, useCallback, useContext } from 'react';
-import { AppContext } from '../../context/HomePageContext';
+import { HomePageContext } from '../../context/HomePageContext';
 import useMovieStore from '../../store/MoviesStore';
 
 const MovieTile = memo(({ movie }) => {
   const setSelectedMovie = useMovieStore((zState) => zState.setSelectedMovie);
-  const { openDetails } = useContext(AppContext);
+  const { openDetails } = useContext(HomePageContext);
   const movieTileClickAction = useCallback(() => {
     setSelectedMovie(movie.id);
     openDetails();

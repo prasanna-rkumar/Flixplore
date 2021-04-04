@@ -3,11 +3,11 @@ import { useContext } from 'react';
 import Dropdown from './Dropdown';
 import MovieTile from './MovieTile';
 import API, { END_POINTS } from '../../api';
-import { AppContext } from '../../context/HomePageContext';
+import { HomePageContext } from '../../context/HomePageContext';
 import CircularProgressIndicator from '../CircularProgressIndicator';
 
 const LeftPane = () => {
-  const { listVisibility } = useContext(AppContext);
+  const { listVisibility } = useContext(HomePageContext);
   return (
     <div className={`col-span-6 col-start-1 lg:col-span-4 lg:col-start-1 lg:col-end-5 ${listVisibility}`}>
       <PaneHeader />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useMoviesStore from '../store/MoviesStore';
 import supabase from './initSupabase';
 
@@ -12,8 +12,8 @@ export const addMovieToWatchList = async (tmdbID) => {
       user_id: user().id,
       tmdb_id: tmdbID,
       is_seen: false,
-      inserted_at: now,
-      updated_at: now,
+      inserted_at: now(),
+      updated_at: now(),
     },
   ], { upsert: true });
 };
@@ -31,12 +31,12 @@ export const getMyWatchList = (filter) => {
     match.is_seen = filter === 'WATCHED';
   }
 
-  return supabase.from('watch_later').select().match({ ...match });
+  return supabase.from('watch_later').select().match({ ...match }).order('inserted_at', { ascending: true });
 };
 
 export const updateMovieWatchStatus = (tmdbID, status) => {
   if (!user()) return Promise.reject(new Error(undefined));
-  return supabase.from('watch_later').update({ is_seen: status }).match({ tmdb_id: tmdbID, user_id: user().id });
+  return supabase.from('watch_later').update({ is_seen: status, updated_at: now() }).match({ tmdb_id: tmdbID, user_id: user().id });
 };
 
 export const deleteMovieFromWatchList = (tmdbID) => {
@@ -63,9 +63,24 @@ export const useSelectedMovieStatus = () => {
 
 export const useMyWatchList = () => {
   const [movies, setMovies] = useState();
+  const [renderCount, setRenderCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [filter, setFilter] = useState('ALL');
+
+  const handleCange = useCallback(() => {
+    setRenderCount((oldCount) => oldCount + 1);
+  }, [movies]);
+
+  useEffect(() => {
+    const mySubscription = supabase
+      .from('watch_later')
+      .on('UPDATE', handleCange)
+      .on('DELETE', handleCange)
+      .subscribe();
+
+    return (() => mySubscription.unsubscribe());
+  }, [movies]);
 
   useEffect(() => {
     setLoading(true);
@@ -74,7 +89,7 @@ export const useMyWatchList = () => {
     }).catch((e) => {
       setError(e);
     }).finally(() => setLoading(false));
-  }, [filter]);
+  }, [filter, renderCount]);
 
   return {
     movies, error, filter, setFilter, loading,

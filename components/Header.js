@@ -6,7 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import { SearchProvider } from '../context/SearchContext';
 import SearchBar from './SearchBar';
 
-const Header = () => (
+const Header = ({ search }) => (
   <div className="sticky top-0 z-40 text-white px-2 border-b-2 border-gray-500 border-opacity-50 appbar py-1">
     <div className="grid grid-flow-row grid-cols-12 p-2 max-w-screen-2xl w-full m-auto gap-x-1">
       <div className="col-span-3">
@@ -23,9 +23,13 @@ const Header = () => (
         </Link>
       </div>
       <div className="col-span-6 m-auto w-full max-w-md">
-        <SearchProvider>
-          <SearchBar />
-        </SearchProvider>
+        {
+          search && (
+            <SearchProvider>
+              <SearchBar />
+            </SearchProvider>
+          )
+        }
       </div>
       <div className="col-span-3 flex flex-row justify-end items-center">
         <ProfileButton />
@@ -35,6 +39,14 @@ const Header = () => (
 );
 
 export default Header;
+
+Header.propTypes = {
+  search: propTypes.bool,
+};
+
+Header.defaultProps = {
+  search: false,
+};
 
 const ProfileButton = () => {
   const { loggedIn, signOut } = useContext(AuthContext);

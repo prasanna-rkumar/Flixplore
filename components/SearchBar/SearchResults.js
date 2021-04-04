@@ -6,7 +6,7 @@ import { SearchContext } from '../../context/SearchContext';
 import styles from './SearchBar.module.css';
 import customScroll from '../RightPane/CustomScroll.module.css';
 import useMoviesStore from '../../store/MoviesStore';
-import { AppContext } from '../../context/HomePageContext';
+import { HomePageContext } from '../../context/HomePageContext';
 
 const SearchResults = memo(({ searchTerm }) => {
   const { isInputFocus } = useContext(SearchContext);
@@ -26,7 +26,7 @@ const SearchResults = memo(({ searchTerm }) => {
         className={`w-full absolute top-full bg-white z-30 max-h-96 overflow-y-scroll rounded-md px-2 pt-2 ${isInputFocus ? 'block' : 'hidden'} ${customScroll.customScroll}`}
       >
         {movies.map((movie) => (
-          <SearchTile movie={movie} />
+          <SearchTile key={movie.id} movie={movie} />
         ))}
       </div>
     )
@@ -41,7 +41,7 @@ export default SearchResults;
 
 const SearchTile = memo(({ movie }) => {
   const setSelectedMovie = useMoviesStore((zState) => zState.setSelectedMovie);
-  const { openDetails } = useContext(AppContext);
+  const { openDetails } = useContext(HomePageContext);
   const movieTileClickAction = useCallback(() => {
     setSelectedMovie(movie.id);
     openDetails();
