@@ -1,13 +1,24 @@
+import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import useMoviesStore from '../store/MoviesStore';
 import supabase from './initSupabase';
 
+const UNAUTHORIZED_ERROR = new Error('UNAUTHORIZED');
+
 const now = () => (new Date()).toISOString();
+
+const loginToast = () => toast.error((
+  <Link href="/login">
+    <span className="underline">Click here to Login and continue</span>
+  </Link>
+), { autoClose: 5000 });
 
 const user = () => supabase.auth.user();
 
 export const addMovieToWatchList = async (tmdbID) => {
-  await supabase.from('watch_later').upsert([
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
+  return supabase.from('watch_later').upsert([
     {
       user_id: user().id,
       tmdb_id: tmdbID,
@@ -19,12 +30,12 @@ export const addMovieToWatchList = async (tmdbID) => {
 };
 
 export const getMovieStatus = (tmdbID) => {
-  if (!user()) return Promise.reject(new Error(undefined));
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
   return supabase.from('watch_later').select().match({ tmdb_id: tmdbID, user_id: user().id });
 };
 
 export const getMyWatchList = (filter) => {
-  if (!user()) return Promise.reject(new Error(undefined));
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
   const match = { user_id: user().id };
 
   if (filter && filter !== 'ALL') {
@@ -35,12 +46,12 @@ export const getMyWatchList = (filter) => {
 };
 
 export const updateMovieWatchStatus = (tmdbID, status) => {
-  if (!user()) return Promise.reject(new Error(undefined));
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
   return supabase.from('watch_later').update({ is_seen: status, updated_at: now() }).match({ tmdb_id: tmdbID, user_id: user().id });
 };
 
 export const deleteMovieFromWatchList = (tmdbID) => {
-  if (!user()) return Promise.reject(new Error(undefined));
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
   return supabase.from('watch_later').delete().match({ tmdb_id: tmdbID, user_id: user().id });
 };
 
@@ -61,7 +72,11 @@ export const useSelectedMovieStatus = () => {
   }, [selectedMovieId]);
 
   const addMovie = useCallback(() => {
-    addMovieToWatchList(selectedMovieId).then(() => fetchStatusFromSupabase());
+    addMovieToWatchList(selectedMovieId)
+      .then(() => fetchStatusFromSupabase())
+      .catch(() => {
+        loginToast();
+      });
   }, [selectedMovieId]);
 
   useEffect(() => {

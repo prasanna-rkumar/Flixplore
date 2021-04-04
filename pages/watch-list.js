@@ -3,6 +3,7 @@ import SEO from '../components/SEO';
 import { useMyWatchList } from '../utils/dbHelper';
 import FilterOptions from '../components/WatchList/FilterOptions';
 import WatchList from '../components/WatchList/WatchList';
+import supabase from '../utils/initSupabase';
 
 export default function WatchListHome() {
   const {
@@ -23,4 +24,14 @@ export default function WatchListHome() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { user } = await supabase.auth.api.getUserByCookie(req);
+
+  if (!user) {
+    return { props: {}, redirect: { destination: '/login', permanent: false } };
+  }
+
+  return { props: {} };
 }
