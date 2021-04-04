@@ -50,13 +50,11 @@ const MovieDetails = memo(({ movieId }) => {
         <span className="text-sm font-medium text-gray-500">Drama, Romance</span>
         <div className="flex flex-row justify-between text-center gap-6 mt-4">
           <Button>
-            <>
-              {' '}
+            <a className="block" href={`https://www.themoviedb.org/movie/${movieId}/watch`} target="blank" rel="noopener noreferrer">
               <BsPlayFill size={20} className="inline relative right-0.5" style={{ top: -1 }} />
               {' '}
               Watch now
-              {' '}
-            </>
+            </a>
           </Button>
           <WatchLaterButton movieId={movieId} />
         </div>

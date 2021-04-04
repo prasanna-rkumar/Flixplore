@@ -47,18 +47,20 @@ export const deleteMovieFromWatchList = (tmdbID) => {
 export const useSelectedMovieStatus = () => {
   const [movieData, setData] = useState();
   const [error, setError] = useState();
-
   const selectedMovieId = useMoviesStore((state) => state.selectedMovieId);
+
+  const addMovie = useCallback(() => addMovieToWatchList(selectedMovieId), [selectedMovieId]);
 
   useEffect(() => {
     getMovieStatus(selectedMovieId).then(({ data }) => {
       if (data && data.length > 0) setData(data[0]);
+      else setData();
     }).catch((e) => {
       setError(e);
     });
   }, [selectedMovieId]);
 
-  return { movieData, error };
+  return { movieData, error, addMovie };
 };
 
 export const useMyWatchList = () => {
@@ -68,15 +70,15 @@ export const useMyWatchList = () => {
   const [error, setError] = useState();
   const [filter, setFilter] = useState('ALL');
 
-  const handleCange = useCallback(() => {
+  const handleChange = useCallback(() => {
     setRenderCount((oldCount) => oldCount + 1);
   }, [movies]);
 
   useEffect(() => {
     const mySubscription = supabase
       .from('watch_later')
-      .on('UPDATE', handleCange)
-      .on('DELETE', handleCange)
+      .on('UPDATE', handleChange)
+      .on('DELETE', handleChange)
       .subscribe();
 
     return (() => mySubscription.unsubscribe());
