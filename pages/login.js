@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import supabase from '../utils/initSupabase';
 import { AuthContext } from '../context/AuthContext';
 import SEO from '../components/SEO';
+import Header from '../components/Header';
 
 const SocialLoginButton = ({ Icon, label, provider }) => {
   const { signIn } = useContext(AuthContext);
@@ -36,6 +37,7 @@ export default function LoginCard() {
   return (
     <>
       <SEO />
+      <Header />
       <div className="max-w-xl m-auto p-2 mt-16">
         <div className="m-auto w-full rounded-md py-4 px-6 text-center shadow-2xl max-w-md" style={{ background: '#354353' }}>
           <h3 className="text-6xl text-white font-bold mt-2">Flixplore</h3>

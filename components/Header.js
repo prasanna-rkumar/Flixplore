@@ -7,7 +7,7 @@ import { SearchProvider } from '../context/SearchContext';
 import SearchBar from './SearchBar';
 
 const Header = ({ search }) => (
-  <div className="sticky top-0 z-40 text-white px-2 border-b-2 border-gray-500 border-opacity-50 appbar py-1">
+  <div className="sticky top-0 z-40 text-white px-4 border-b-2 border-gray-500 border-opacity-50 appbar py-1">
     <div className="grid grid-flow-row grid-cols-12 p-2 max-w-screen-2xl w-full m-auto gap-x-1">
       <div className="col-span-3">
         <Link href="/">
