@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import useMoviesStore from '../store/MoviesStore';
+import useMoviesStore from '../store/MovieStore';
 import supabase from './initSupabase';
 
 const UNAUTHORIZED_ERROR = new Error('UNAUTHORIZED');

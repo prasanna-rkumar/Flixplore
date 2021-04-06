@@ -10,7 +10,7 @@ import Header from '../components/Header';
 const SocialLoginButton = ({ Icon, label, provider }) => {
   const { signIn } = useContext(AuthContext);
   return (
-    <button type="submit" onClick={() => signIn(provider)} className="flex flex-row justify-center items-center border-gray-400 border-2 rounded-full p-1 my-3 w-full hover:border-pink-400">
+    <button type="submit" onClick={() => signIn(provider)} className=" outline-none flex flex-row justify-center items-center border-gray-400 border-2 rounded-full p-1 my-3 w-full hover:border-pink-400">
       {Icon ? (
         <div className="w-10">
           <Icon size={24} />

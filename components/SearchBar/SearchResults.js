@@ -4,8 +4,7 @@ import propTypes from 'prop-types';
 import API, { END_POINTS } from '../../tmdb-api';
 import { SearchContext } from '../../context/SearchContext';
 import styles from './SearchBar.module.css';
-import customScroll from '../RightPane/CustomScroll.module.css';
-import useMoviesStore from '../../store/MoviesStore';
+import useMoviesStore from '../../store/MovieStore';
 import { HomePageContext } from '../../context/HomePageContext';
 
 const SearchResults = memo(({ searchTerm }) => {
@@ -23,7 +22,7 @@ const SearchResults = memo(({ searchTerm }) => {
           top: '110%',
           background: '#354353',
         }}
-        className={`w-full absolute top-full bg-white z-30 max-h-96 overflow-y-scroll rounded-md px-2 pt-2 ${isInputFocus ? 'block' : 'hidden'} ${customScroll.customScroll}`}
+        className={`custom-scroll w-full absolute top-full bg-white z-30 max-h-96 overflow-y-scroll rounded-md px-2 pt-2 ${isInputFocus ? 'block' : 'hidden'}`}
       >
         {movies.map((movie) => (
           <SearchTile key={movie.id} movie={movie} />

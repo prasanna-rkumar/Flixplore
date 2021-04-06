@@ -1,10 +1,12 @@
+/* eslint-disable no-unreachable */
 import { useQuery } from 'react-query';
-import { useContext } from 'react';
-import Dropdown from './Dropdown';
+import { useContext, useCallback } from 'react';
 import MovieTile from './MovieTile';
 import API, { END_POINTS } from '../../tmdb-api';
 import { HomePageContext } from '../../context/HomePageContext';
 import CircularProgressIndicator from '../CircularProgressIndicator';
+import GenreDropdown from './GenreDropdown';
+import useDiscoverFilterStore from '../../store/DiscoverFilterStore';
 
 const LeftPane = () => {
   const { listVisibility } = useContext(HomePageContext);
@@ -19,20 +21,27 @@ const LeftPane = () => {
 const PaneHeader = () => (
   <div className="flex flex-row justify-between mb-4 px-3 sticky top-16 bg-primary z-10 py-2">
     <h3 className="text-2xl font-semibold text-white tracking-normal sm:text-3xl">Movies</h3>
-    <div>
-      <Dropdown label="Genre" />
-      <Dropdown label="Language" />
+    <div className="flex flex-row justify-center items-end">
+      <GenreDropdown />
+      {/* <Dropdown label="Language" /> */}
     </div>
   </div>
 );
 
 const MoviesList = () => {
-  const query = useQuery(END_POINTS.discover, API.discover);
-  const { data, error, status } = query;
+  const { genre } = useDiscoverFilterStore((state) => ({ genre: state.genre }));
+  const fetchDiscoverMovies = useCallback(() => API.discover({ genre: genre.id }), [genre]);
+  const { data, error, isLoading } = useQuery([END_POINTS.discover, genre.id], fetchDiscoverMovies);
 
-  if (status === 'loading') return <CircularProgressIndicator size={50} />;
+  if (isLoading) {
+    return (
+      <div className="m-auto">
+        <CircularProgressIndicator size={50} />
+      </div>
+    );
+  }
 
-  if (status === 'error') {
+  if (error) {
     return (
       <span>
         Error:

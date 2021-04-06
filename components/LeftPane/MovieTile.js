@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { memo, useCallback, useContext } from 'react';
 import { HomePageContext } from '../../context/HomePageContext';
-import useMovieStore from '../../store/MoviesStore';
+import useMovieStore from '../../store/MovieStore';
 
 const MovieTile = memo(({ movie }) => {
   const setSelectedMovie = useMovieStore((zState) => zState.setSelectedMovie);

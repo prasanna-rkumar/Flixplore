@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary: #1a2129;
+}
+
 html, body {
   padding: 0;
   margin: 0;
-  background-color: #1a2129;
+  background-color: var(--primary);
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
@@ -19,7 +23,35 @@ a {
 }
 
 .appbar {
-  background-color: #1a2129;
+  background-color: var(--primary);
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+/* Track */
+.custom-scroll::-webkit-scrollbar-track {
+  background: #354353; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #536c8a; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #668ab3; 
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:active {
+  background: #b7d9ff; 
+}
+
+.bg {
+  background-color: var(--primary);
 }
 
 @variants hover {

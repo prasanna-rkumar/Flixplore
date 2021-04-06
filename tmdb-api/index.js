@@ -11,10 +11,12 @@ export const END_POINTS = {
   movie: 'movie/',
   search: 'search/movie',
   image: 'movie/{movie_id}/images',
+  genres: 'genre/movie/list',
 };
 
 const API = {
-  discover: () => {
+
+  discover: ({ genre }) => {
     const endpoint = END_POINTS.discover;
     const params = {
       sort_by: 'popularity.desc',
@@ -22,12 +24,15 @@ const API = {
       include_video: false,
       page: 1,
     };
+    if (genre !== 0) params.with_genres = genre;
     return get({ endpoint, params });
   },
+
   movie: ({ movieId }) => {
     const endpoint = END_POINTS.movie + movieId;
     return get({ endpoint });
   },
+
   search: (searchTerm) => {
     const endpoint = END_POINTS.search;
     const params = {
@@ -36,6 +41,7 @@ const API = {
     };
     return get({ endpoint, params });
   },
+
   image: ({ movieId }) => {
     const endpoint = END_POINTS.image.replace('{movie_id}', movieId);
     const params = {
@@ -43,6 +49,8 @@ const API = {
     };
     return get({ endpoint, params });
   },
+
+  genres: () => get({ endpoint: END_POINTS.genres }),
 };
 
 export default API;

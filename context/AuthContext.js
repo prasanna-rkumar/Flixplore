@@ -14,7 +14,6 @@ const signIn = (provider) => supabase.auth.signIn({ provider });
 
 export const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
-  console.log(loggedIn);
 
   const handleEventChange = (event) => {
     if (event === 'SIGNED_IN') {
