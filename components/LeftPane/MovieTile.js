@@ -4,7 +4,10 @@ import { HomePageContext } from '../../context/HomePageContext';
 import useMovieStore from '../../store/MovieStore';
 
 const MovieTile = memo(({ movie }) => {
-  const setSelectedMovie = useMovieStore((zState) => zState.setSelectedMovie);
+  const { setSelectedMovie, selectedMovieId } = useMovieStore((zState) => ({
+    setSelectedMovie: zState.setSelectedMovie,
+    selectedMovieId: zState.selectedMovieId,
+  }));
   const { openDetails } = useContext(HomePageContext);
   const movieTileClickAction = useCallback(() => {
     setSelectedMovie(movie.id);
@@ -22,7 +25,7 @@ const MovieTile = memo(({ movie }) => {
         }
       }}
       key={movie.id}
-      className="relative rounded-lg border-4 cursor-pointer border-transparent hover:border-pink-400 bottom-0 hover:bottom-2 focus:border-pink-600"
+      className={`relative outline-none rounded-lg border-4 cursor-pointer border-transparent hover:border-pink-400 bottom-0 hover:bottom-2 focus:border-pink-600 ${selectedMovieId === movie.id && 'active-movie'}`}
     >
       <img alt={movie.original_title} className="rounded" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
     </div>

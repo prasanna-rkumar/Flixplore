@@ -26,10 +26,10 @@ const GenreDropdown = () => {
   if (genre && genre.id !== 0) {
     return (
       <div className="flex flex-col justify-between">
-        <span className="text-xs font-medium text-gray-400">Genre</span>
-        <div className="flex flex-row gap-x-1 items-center justify-around text-lg font-medium text-pink-500">
+        <span className=" text-xs font-medium text-gray-400">Genre</span>
+        <div className="flex flex-row gap-x-1 items-center justify-around text-base sm:text-lg font-medium text-pink-500">
           <h5>{genre.name}</h5>
-          <AiOutlineClose className="text-pink-500 cursor-pointer hover:" size={20} onClick={() => setGenre(options[0])} />
+          <AiOutlineClose className="text-pink-500 cursor-pointer" size={16} onClick={() => setGenre(options[0])} />
         </div>
       </div>
     );

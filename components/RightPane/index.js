@@ -11,7 +11,6 @@ const RightPane = () => {
   } = useContext(HomePageContext);
 
   useEffect(() => {
-    console.log(isClosed);
     if (isClosed) {
       window.scroll(0, offset);
     }

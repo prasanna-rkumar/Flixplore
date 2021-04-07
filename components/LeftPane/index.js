@@ -24,7 +24,7 @@ const LeftPane = () => {
 
 const PaneHeader = () => (
   <div className="flex flex-row justify-between mb-4 px-3 sticky top-16 bg-primary z-10 py-2">
-    <h3 className="text-2xl font-semibold text-white tracking-normal sm:text-3xl">Movies</h3>
+    <h3 className="text-2xl font-semibold text-white tracking-normal  sm:text-3xl">Trending</h3>
     <div className="flex flex-row justify-center items-end">
       <GenreDropdown />
       {/* <Dropdown label="Language" /> */}

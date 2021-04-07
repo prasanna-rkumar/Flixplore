@@ -50,7 +50,7 @@ const MovieDetails = memo(({ movieId }) => {
       </div>
       <div className="flex flex-1 flex-col gap-1.5 text-white w-full m-auto max-w-lg relative p-3 -top-24">
         <h2 className="text-xl font-semibold ">{movie.original_title}</h2>
-        <span className="text-sm font-medium text-gray-500">Drama, Romance</span>
+        <span className="text-sm font-medium text-gray-500">{movie.genres.map((genre, index) => genre.name + ((index === movie.genres.length - 1) ? '' : ', '))}</span>
         <div className="flex flex-row justify-between text-center gap-6 mt-4">
           <Button>
             <a className="block" href={`https://www.themoviedb.org/movie/${movieId}/watch`} target="blank" rel="noopener noreferrer">
