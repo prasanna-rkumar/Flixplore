@@ -16,13 +16,13 @@ export const END_POINTS = {
 
 const API = {
 
-  discover: ({ genre }) => {
+  discover: ({ genre, page }) => {
     const endpoint = END_POINTS.discover;
     const params = {
       sort_by: 'popularity.desc',
       include_adult: false,
       include_video: false,
-      page: 1,
+      page,
     };
     if (genre !== 0) params.with_genres = genre;
     return get({ endpoint, params });

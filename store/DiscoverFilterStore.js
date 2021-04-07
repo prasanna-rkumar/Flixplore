@@ -5,13 +5,7 @@ const useDiscoverFilterStore = create((set) => ({
     id: 0,
     name: 'All',
   },
-  setGenre: (genre) => {
-    set(() => ({ genre }));
-  },
-  language: '',
-  setLanguage: (language) => set(() => ({ language })),
-  page: 0,
-  setPage: (page) => set(() => ({ page })),
+  setGenre: (genre) => set((state) => ({ ...state, genre })),
 }));
 
 export default useDiscoverFilterStore;

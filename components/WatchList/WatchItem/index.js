@@ -79,10 +79,10 @@ const WatchItemListTile = ({
       onKeyDown={() => { }}
       className="relative group rounded-lg border-4 cursor-pointer border-transparent hover:border-pink-400 bottom-0 hover:bottom-2 focus:border-pink-600"
     >
-      {movie.is_seen ? <div className="absolute top-0 left-0 w-full h-full bg-gray-500 bg-opacity-50" /> : <></>}
+      {movie.is_seen ? <div className="absolute rounded top-0 left-0 w-full h-full bg-gray-500 bg-opacity-50" /> : <></>}
       <img alt={` ${poster}`} className="rounded transition duration-500 ease-in-out" src={`https://image.tmdb.org/t/p/w500${poster}`} />
-      <div className={`${style.watchItem} absolute top-0 hidden w-full group-hover:block`}>
-        <div className="flex flex-row gap-x-4 px-4 justify-end items-center h-9">
+      <div className={`${style.watchItem} absolute top-0 hidden w-full rounded group-hover:block`}>
+        <div className="flex flex-row gap-x-4 px-4 justify-end items-center rounded h-9">
           <IconWithTWClass onClick={updateStatus}>
             <BsEyeFill />
           </IconWithTWClass>

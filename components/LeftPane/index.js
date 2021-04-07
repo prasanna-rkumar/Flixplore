@@ -1,12 +1,16 @@
-/* eslint-disable no-unreachable */
-import { useQuery } from 'react-query';
-import { useContext, useCallback } from 'react';
+import { useInfiniteQuery } from 'react-query';
+import {
+  useContext, useCallback, Fragment, useRef, forwardRef, useEffect,
+} from 'react';
+import propTypes from 'prop-types';
 import MovieTile from './MovieTile';
 import API, { END_POINTS } from '../../tmdb-api';
 import { HomePageContext } from '../../context/HomePageContext';
 import CircularProgressIndicator from '../CircularProgressIndicator';
 import GenreDropdown from './GenreDropdown';
 import useDiscoverFilterStore from '../../store/DiscoverFilterStore';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import Button from '../Button';
 
 const LeftPane = () => {
   const { listVisibility } = useContext(HomePageContext);
@@ -29,11 +33,41 @@ const PaneHeader = () => (
 );
 
 const MoviesList = () => {
-  const { genre } = useDiscoverFilterStore((state) => ({ genre: state.genre }));
-  const fetchDiscoverMovies = useCallback(() => API.discover({ genre: genre.id }), [genre]);
-  const { data, error, isLoading } = useQuery([END_POINTS.discover, genre.id], fetchDiscoverMovies);
+  const { genre } = useDiscoverFilterStore((state) => state);
+  const fetchDiscoverMovies = useCallback(
+    ({ pageParam = 1 }) => API.discover({ genre: genre.id, page: pageParam }), [genre],
+  );
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+    remove,
+    refetch,
+  } = useInfiniteQuery(END_POINTS.discover, fetchDiscoverMovies, {
+    getNextPageParam: (lastPage) => {
+      const { page, total_pages: totalPages } = lastPage.data;
+      return (page < totalPages) ? page + 1 : false;
+    },
+  });
 
-  if (isLoading) {
+  const loadMoreButtonRef = useRef();
+
+  useIntersectionObserver({
+    target: loadMoreButtonRef,
+    onIntersect: fetchNextPage,
+    enabled: hasNextPage,
+  });
+
+  useEffect(() => {
+    remove();
+    refetch();
+    window.scrollTo(0, 0);
+  }, [genre]);
+
+  if (status === 'loading') {
     return (
       <div className="m-auto">
         <CircularProgressIndicator size={50} />
@@ -41,7 +75,7 @@ const MoviesList = () => {
     );
   }
 
-  if (error) {
+  if (status === 'error') {
     return (
       <span>
         Error:
@@ -50,17 +84,46 @@ const MoviesList = () => {
     );
   }
 
-  const movies = data.data.results;
   return (
     <div className="grid grid-cols-2 gap-2.5 gap-y-4 sm:grid-cols-4">
-      {movies.map((movie) => (
-        <MovieTile
-          key={movie.id}
-          movie={movie}
-        />
+      {data.pages.map((page) => (
+        <Fragment key={page.data.page}>
+          {page.data.results.map((movie) => (
+            <MovieTile
+              key={movie.id}
+              movie={movie}
+            />
+          ))}
+        </Fragment>
       ))}
+      <div className="col-span-full w-24 text-center m-auto pt-3 pb-10">
+        <LoadMore
+          type="button"
+          ref={loadMoreButtonRef}
+          onClick={() => fetchNextPage()}
+          isFetchingNextPage={isFetchingNextPage}
+        />
+      </div>
     </div>
   );
+};
+
+const LoadMore = forwardRef(({ onClick, isFetchingNextPage }, ref) => {
+  if (isFetchingNextPage) return <CircularProgressIndicator size={48} />;
+  return (
+    <Button
+      type="button"
+      ref={ref}
+      onClick={onClick}
+    >
+      <span>Load more</span>
+    </Button>
+  );
+});
+
+LoadMore.propTypes = {
+  onClick: propTypes.func.isRequired,
+  isFetchingNextPage: propTypes.bool.isRequired,
 };
 
 export default LeftPane;

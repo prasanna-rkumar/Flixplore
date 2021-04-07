@@ -1,8 +1,9 @@
 import propTypes from 'prop-types';
-import Image from 'next/image';
 
 const CircularProgressIndicator = ({ size }) => (
-  <Image className="animate-spin" src="/loading.svg" height={size} width={size} />
+  <div className="flex flex-row justify-center">
+    <img className="animate-spin" src="/loading.svg" alt="loading" width={size} height={size} />
+  </div>
 );
 
 CircularProgressIndicator.propTypes = {
