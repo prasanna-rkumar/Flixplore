@@ -8,6 +8,8 @@ import useWindowDimensions from '../utils/useWindowDimensions';
 const initialState = {
   detailsVisibility: 'hidden',
   listVisibility: 'block',
+  pageYOffset: 0,
+  isClosed: false,
 };
 
 const reducer = (state, action) => {
@@ -15,6 +17,8 @@ const reducer = (state, action) => {
   switch (type) {
     case 'showDetails':
       state.detailsVisibility = 'block';
+      state.pageYOffset = window.pageYOffset;
+      state.isClosed = false;
       if (action.displayMedia === 'mobile') {
         state.listVisibility = 'hidden';
       }
@@ -22,6 +26,7 @@ const reducer = (state, action) => {
     case 'hideDetails':
       state.detailsVisibility = 'hidden';
       state.listVisibility = 'block';
+      state.isClosed = true;
       return;
     default:
       throw new Error();
@@ -48,7 +53,12 @@ export const HomePageProvider = ({ children }) => {
 
   return (
     <HomePageContext.Provider value={{
-      detailsVisibility, listVisibility, closeDetails, openDetails,
+      detailsVisibility,
+      listVisibility,
+      closeDetails,
+      openDetails,
+      offset: state.pageYOffset,
+      isClosed: state.isClosed,
     }}
     >
       {children}
