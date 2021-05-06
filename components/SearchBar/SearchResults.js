@@ -61,7 +61,7 @@ const SearchTile = memo(({ movie }) => {
       <img width={100} height={150} alt="poster" className="col-span-3 rounded-sm" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
       <div className="flex flex-col text-white gap-y-3 col-span-9">
         <div className="flex flex-col justify-start items-start">
-          <span className="text-lg font-medium">{movie.original_title}</span>
+          <span className="text-lg font-medium">{movie.title}</span>
           <span className="text-gray-400 text-sm font-normal">{movie.release_date}</span>
         </div>
         <div className={`text-base text-gray-300 leading-tight  ${styles['truncate-3-lines']}`}>{movie.overview}</div>

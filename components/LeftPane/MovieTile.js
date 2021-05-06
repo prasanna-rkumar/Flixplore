@@ -27,7 +27,7 @@ const MovieTile = memo(({ movie }) => {
       key={movie.id}
       className={`relative outline-none rounded-lg border-4 cursor-pointer border-transparent hover:border-pink-400 bottom-0 hover:bottom-2 focus:border-pink-600 ${selectedMovieId === movie.id && 'active-movie'}`}
     >
-      <img alt={movie.original_title} className="rounded" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
+      <img alt={movie.title} className="rounded" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
     </div>
   );
 });
