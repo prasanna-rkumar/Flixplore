@@ -5,6 +5,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { AuthContext } from '../context/AuthContext';
 import { SearchProvider } from '../context/SearchContext';
 import SearchBar from './SearchBar';
+import Menu from './shared/Menu';
 
 const Header = ({ search }) => (
   <div className="sticky top-0 z-40 text-white px-4 border-b-2 border-gray-500 border-opacity-50 appbar py-1">
@@ -52,41 +53,19 @@ const ProfileButton = () => {
   const { loggedIn, signOut } = useContext(AuthContext);
   return (
     loggedIn ? (
-      <div className="relative group">
-        <button type="button">
-          <FaUserCircle size="1.75rem" />
-        </button>
-        <div
-          className="absolute top-full right-0 p-6 hidden group-hover:block rounded shadow-lg"
-          style={{
-            background: '#354353',
-          }}
-        >
-          <div className="w-60" />
-          <ul>
-            <DropdownItem>
-              <Link href="/watch-list"><a>Watch list</a></Link>
-            </DropdownItem>
-            <DropdownItem>
-              <button type="button" onClick={signOut}>Logout</button>
-            </DropdownItem>
-          </ul>
-        </div>
-      </div>
+      <Menu
+        title={<FaUserCircle size="1.75rem" />}
+        direction="right"
+        menuItems={[
+          <Link href="/playlists"><a>Playlists</a></Link>,
+          <Link href="/watch-list"><a>Watch list</a></Link>,
+          <button className="w-full cursor-pointer" type="button" onClick={signOut}>Logout</button>,
+        ]}
+      />
     ) : (
       <Link href="/login">
         <span className="font-medium cursor-pointer hover:text-pink-400">Login</span>
       </Link>
     )
   );
-};
-
-const DropdownItem = ({ children }) => (
-  <li className="py-2 text-lg font-medium hover:text-pink-400">
-    {children}
-  </li>
-);
-
-DropdownItem.propTypes = {
-  children: propTypes.element.isRequired,
 };

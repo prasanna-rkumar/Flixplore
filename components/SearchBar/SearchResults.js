@@ -1,4 +1,4 @@
-import { memo, useCallback, useContext } from 'react';
+import { memo, useContext } from 'react';
 import { useQuery } from 'react-query';
 import propTypes from 'prop-types';
 import API, { END_POINTS } from '../../tmdb-api';
@@ -9,6 +9,8 @@ import { HomePageContext } from '../../context/HomePageContext';
 
 const SearchResults = memo(({ searchTerm }) => {
   const { isInputFocus } = useContext(SearchContext);
+  const setSelectedMovie = useMoviesStore((zState) => zState.setSelectedMovie);
+  const { openDetails } = useContext(HomePageContext);
   const fetchSearchResults = () => API.search(searchTerm);
   const { data, error } = useQuery([END_POINTS.search, searchTerm], fetchSearchResults);
   if (error || !data) return (<></>);
@@ -25,7 +27,14 @@ const SearchResults = memo(({ searchTerm }) => {
         className={`custom-scroll w-full absolute top-full bg-white z-30 max-h-96 overflow-y-scroll rounded-md px-2 pt-2 ${isInputFocus ? 'block' : 'hidden'}`}
       >
         {movies.map((movie) => (
-          <SearchTile key={movie.id} movie={movie} />
+          <SearchTile
+            onClick={() => {
+              setSelectedMovie(movie.id);
+              openDetails();
+            }}
+            key={movie.id}
+            movie={movie}
+          />
         ))}
       </div>
     )
@@ -38,38 +47,35 @@ SearchResults.propTypes = {
 
 export default SearchResults;
 
-const SearchTile = memo(({ movie }) => {
-  const setSelectedMovie = useMoviesStore((zState) => zState.setSelectedMovie);
-  const { openDetails } = useContext(HomePageContext);
-  const movieTileClickAction = useCallback(() => {
-    setSelectedMovie(movie.id);
-    openDetails();
-  }, [movie.id]);
-  return (
-    <div
-      key={movie.id}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          movieTileClickAction();
-        }
-      }}
-      onClick={movieTileClickAction}
-      className="grid grid-cols-12 gap-2 mb-2 transition duration-300 ease-in-out border-2 border-transparent hover:border-pink-600 rounded"
-    >
-      <img width={100} height={150} alt="poster" className="col-span-3 rounded-sm" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
-      <div className="flex flex-col text-white gap-y-3 col-span-9">
-        <div className="flex flex-col justify-start items-start">
-          <span className="text-lg font-medium">{movie.title}</span>
-          <span className="text-gray-400 text-sm font-normal">{movie.release_date}</span>
-        </div>
-        <div className={`text-base text-gray-300 leading-tight  ${styles['truncate-3-lines']}`}>{movie.overview}</div>
+export const SearchTile = memo(({ movie, onClick }) => (
+  <div
+    key={movie.id}
+    role="button"
+    tabIndex={0}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter') {
+        onClick();
+      }
+    }}
+    onClick={onClick}
+    className="grid grid-cols-12 gap-3 mb-2 transition duration-300 ease-in-out border-2 border-transparent hover:border-pink-600 rounded"
+  >
+    <img width={200} height={300} alt="poster" className="col-span-3 rounded-sm" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
+    <div className="flex flex-col text-white gap-y-3 col-span-9">
+      <div className="flex flex-col justify-start items-start">
+        <span className="text-lg font-medium">{movie.title}</span>
+        <span className="text-gray-400 text-sm font-normal">{movie.release_date}</span>
       </div>
+      <div className={`text-base text-gray-300 leading-tight  ${styles['truncate-3-lines']}`}>{movie.overview}</div>
     </div>
-  );
-});
+  </div>
+));
 
 SearchTile.propTypes = {
   movie: propTypes.instanceOf(Object).isRequired,
+  onClick: propTypes.func,
+};
+
+SearchTile.defaultProps = {
+  onClick: () => { },
 };

@@ -16,7 +16,40 @@ const loginToast = () => toast.error((
 
 const user = () => supabase.auth.user();
 
-export const addMovieToWatchList = async (tmdbID) => {
+export const addMovieToPlaylist = (movieID, playlistID) => {
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
+  return supabase.from('playlist_movies').insert({
+    user_id: user().id,
+    tmdb_id: movieID,
+    playlist_id: playlistID,
+  });
+};
+
+export const getPlaylistMovies = (playlistID) => supabase.from('playlist_movies').select().match({ playlist_id: playlistID });
+
+export const getPlaylists = () => {
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
+  return supabase.from('playlists').select(`
+    id,
+    playlist_name,
+    playlist_movies (
+      id,
+      tmdb_id
+    )
+  `).match({ user_id: user().id });
+};
+
+export const createPlaylist = (name) => {
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
+  return supabase.from('playlists').insert([
+    {
+      user_id: user().id,
+      playlist_name: name,
+    },
+  ]);
+};
+
+export const addMovieToWatchList = (tmdbID) => {
   if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
   return supabase.from('watch_later').upsert([
     {
@@ -101,7 +134,7 @@ export const useMyWatchList = () => {
 
   useEffect(() => {
     const mySubscription = supabase
-      .from('watch_later')
+      .from(`watch_later:user_id=eq.${user().uid}`)
       .on('UPDATE', handleChange)
       .on('DELETE', handleChange)
       .subscribe();

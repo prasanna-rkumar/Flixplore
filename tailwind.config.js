@@ -19,6 +19,7 @@ module.exports = {
     display: ['group-hover'],
     extend: {
       display: ['responsive'],
+      backgroundOpacity: ['disabled'],
     },
   },
   plugins: [

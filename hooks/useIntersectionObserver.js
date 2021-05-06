@@ -4,7 +4,6 @@ export default function useIntersectionObserver({
   root,
   target,
   onIntersect,
-  threshold = 1.0,
   rootMargin = '0px',
   enabled = true,
 }) {
@@ -22,7 +21,6 @@ export default function useIntersectionObserver({
       {
         root: root && root.current,
         rootMargin,
-        threshold,
       },
     );
 

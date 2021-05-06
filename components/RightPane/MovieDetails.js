@@ -10,6 +10,7 @@ import WatchBadge from './WatchBadge';
 import WatchLaterButton from './WatchLaterButton';
 import Button from '../Button';
 import { useSelectedMovieStatus } from '../../utils/dbHelper';
+import PlaylistsDropdown from './PlaylistsDropdown';
 
 const MovieDetails = memo(({ movieId }) => {
   const fetchMovieDetails = useCallback(() => API.movie({ movieId }), [movieId]);
@@ -49,7 +50,10 @@ const MovieDetails = memo(({ movieId }) => {
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-1.5 text-white w-full m-auto max-w-lg relative p-3 -top-24">
-        <h2 className="text-xl font-semibold ">{movie.title}</h2>
+        <h2 className="text-xl font-semibold">
+          {movie.title}
+          <PlaylistsDropdown movieID={movie.id} />
+        </h2>
         <span className="text-sm font-medium text-gray-500">{movie.genres.map((genre, index) => genre.name + ((index === movie.genres.length - 1) ? '' : ', '))}</span>
         <div className="flex flex-row justify-between text-center gap-6 mt-4">
           <Button>
