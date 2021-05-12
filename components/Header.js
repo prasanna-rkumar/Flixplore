@@ -59,12 +59,12 @@ const ProfileButton = () => {
         direction="right"
         menuItems={[
           (
-            <div className="w-full h-full px-2 flex justify-start items-center">
+            <div className="w-full h-full px-2 flex flex-col justify-center items-stretch">
               <Link href="/playlists"><a>Playlists</a></Link>
             </div>
           ),
           (
-            <div className="w-full h-full px-2 flex justify-start items-center">
+            <div className="w-full h-full px-2 flex flex-col justify-center items-stretch">
               <Link href="/watch-list"><a>Watch list</a></Link>
             </div>
           ),
