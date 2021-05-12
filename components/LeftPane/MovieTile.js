@@ -25,9 +25,9 @@ const MovieTile = memo(({ movie }) => {
         }
       }}
       key={movie.id}
-      className={`relative outline-none rounded-lg border-4 cursor-pointer border-transparent hover:border-pink-400 bottom-0 hover:bottom-2 focus:border-pink-600 ${selectedMovieId === movie.id && 'active-movie'}`}
+      className={`transform box-content transition-transform relative outline-none rounded-lg border-4 cursor-pointer border-transparent hover:border-pink-400 bottom-0  focus:border-pink-600 ${selectedMovieId === movie.id ? 'active-movie' : 'hover:-translate-y-2'}`}
     >
-      <img alt={movie.title} className="rounded" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
+      <img alt={movie.title} className="rounded object-cover" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
     </div>
   );
 });

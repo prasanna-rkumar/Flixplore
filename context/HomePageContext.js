@@ -1,9 +1,11 @@
 import propTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import {
   useEffect, createContext, useCallback, useRef,
 } from 'react';
 import { useImmerReducer } from 'use-immer';
 import useWindowDimensions from '../utils/useWindowDimensions';
+import useMoviesStore from '../store/MovieStore';
 
 const initialState = {
   detailsVisibility: 'hidden',
@@ -36,12 +38,22 @@ const reducer = (state, action) => {
 export const HomePageContext = createContext();
 
 export const HomePageProvider = ({ children }) => {
+  const { query } = useRouter();
+  const setSelectedMovie = useMoviesStore((state) => state.setSelectedMovie);
+
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const { detailsVisibility, listVisibility } = state;
   const { width } = useWindowDimensions();
   const displayMedia = useRef('desktop');
   const closeDetails = useCallback(() => dispatch({ type: 'hideDetails', displayMedia: displayMedia.current }), [displayMedia]);
   const openDetails = useCallback(() => dispatch({ type: 'showDetails', displayMedia: displayMedia.current }), [displayMedia]);
+
+  useEffect(() => {
+    if (Object.prototype.hasOwnProperty.call(query, 'movieID')) {
+      setSelectedMovie(parseInt(query.movieID, 10));
+      openDetails();
+    }
+  }, [query]);
 
   useEffect(() => {
     if (width >= 1024) {

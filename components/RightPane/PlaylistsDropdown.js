@@ -39,7 +39,7 @@ const PlaylistsDropdown = ({ movieID }) => {
 };
 
 PlaylistsDropdown.propTypes = {
-  movieID: propTypes.string.isRequired,
+  movieID: propTypes.number.isRequired,
 };
 
 export default PlaylistsDropdown;
