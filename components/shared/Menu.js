@@ -41,7 +41,7 @@ const Menu = ({ title, menuItems, direction }) => {
         {title}
       </button>
       {show && (
-        <div style={direction === 'left' ? { left: 0 } : { right: 0 }} className="origin-top-right absolute z-50 w-48 py-2 mt-1 bg-gray-200 rounded shadow-md">
+        <div style={direction === 'left' ? { left: 0 } : { right: 0 }} className="origin-top-right absolute z-50 w-48 py-2 mt-1 bg-menu-bg rounded shadow-md">
           {menuItems.map((menuItem) => (
             <div
               tabIndex={0}
@@ -51,7 +51,7 @@ const Menu = ({ title, menuItems, direction }) => {
                 setShow(false);
               }}
               key={uuid()}
-              className="cursor-pointer text-gray-800 h-8 flex flex-col items-stretch justify-around hover:bg-blue-500 hover:text-blue-50"
+              className="cursor-pointer text-gray-100 h-8 flex flex-col items-stretch justify-around hover:bg-blue-500 hover:text-blue-50"
             >
               {menuItem}
             </div>

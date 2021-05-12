@@ -12,6 +12,9 @@ module.exports = {
         seondary: {
           DEFAULT: '#db2777',
         },
+        'menu-bg': {
+          DEFAULT: 'rgb(53, 67, 83)',
+        },
       },
     },
   },

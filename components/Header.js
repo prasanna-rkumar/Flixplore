@@ -2,6 +2,7 @@ import Link from 'next/link';
 import propTypes from 'prop-types';
 import { useContext } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
+import { RiLogoutCircleRLine } from 'react-icons/ri';
 import { AuthContext } from '../context/AuthContext';
 import { SearchProvider } from '../context/SearchContext';
 import SearchBar from './SearchBar';
@@ -57,9 +58,20 @@ const ProfileButton = () => {
         title={<FaUserCircle size="1.75rem" />}
         direction="right"
         menuItems={[
-          <Link href="/playlists"><a>Playlists</a></Link>,
-          <Link href="/watch-list"><a>Watch list</a></Link>,
-          <button className="w-full cursor-pointer" type="button" onClick={signOut}>Logout</button>,
+          (
+            <div className="w-full h-full px-2 flex justify-start items-center">
+              <Link href="/playlists"><a>Playlists</a></Link>
+            </div>
+          ),
+          (
+            <div className="w-full h-full px-2 flex justify-start items-center">
+              <Link href="/watch-list"><a>Watch list</a></Link>
+            </div>
+          ),
+          <button className="w-full h-full bg-gray-400 hover:bg-red-500 hover:text-white cursor-pointer text-red-600" type="button" onClick={signOut}>
+            Logout
+            <RiLogoutCircleRLine className="inline ml-1" />
+          </button>,
         ]}
       />
     ) : (
