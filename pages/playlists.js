@@ -17,7 +17,7 @@ export default function PlaylistHome() {
 
   return (
     <>
-      <Header />
+      <Header search={false} />
       <div>
         <SEO />
         <AnimatePresence>
