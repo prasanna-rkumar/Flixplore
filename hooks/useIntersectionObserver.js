@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 
 export default function useIntersectionObserver({
-  root,
   target,
   onIntersect,
-  rootMargin = '0px',
   enabled = true,
 }) {
   useEffect(() => {
@@ -18,10 +16,6 @@ export default function useIntersectionObserver({
           onIntersect();
         }
       }),
-      {
-        root: root && root.current,
-        rootMargin,
-      },
     );
 
     const el = target && target.current;
