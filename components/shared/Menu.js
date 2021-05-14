@@ -2,7 +2,9 @@ import propTypes from 'prop-types';
 import uuid from 'react-uuid';
 import { useState, useRef, useEffect } from 'react';
 
-const Menu = ({ title, menuItems, direction }) => {
+const Menu = ({
+  title, menuItems, direction, left,
+}) => {
   const [show, setShow] = useState(false);
   const container = useRef(null);
 
@@ -41,7 +43,7 @@ const Menu = ({ title, menuItems, direction }) => {
         {title}
       </button>
       {show && (
-        <div style={direction === 'left' ? { left: 0 } : { right: 0 }} className="origin-top-right absolute z-50 w-48 py-2 mt-1 bg-menu-bg rounded shadow-md">
+        <div style={direction === 'left' ? { left } : { right: 0 }} className="origin-top-right absolute z-50 w-48 py-2 mt-1 bg-menu-bg rounded shadow-md">
           {menuItems.map((menuItem) => (
             <div
               tabIndex={0}
@@ -66,10 +68,12 @@ Menu.propTypes = {
   title: propTypes.element.isRequired,
   menuItems: propTypes.instanceOf(Array).isRequired,
   direction: propTypes.string,
+  left: propTypes.number,
 };
 
 Menu.defaultProps = {
   direction: 'left',
+  left: 0,
 };
 
 export default Menu;

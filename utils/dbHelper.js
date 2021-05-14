@@ -39,6 +39,22 @@ export const getPlaylists = () => {
   `).match({ user_id: user().id });
 };
 
+export const deletePlaylist = (playlistID) => {
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
+  return supabase.from('playlists').delete().match({
+    id: playlistID,
+  });
+};
+
+export const updatePlaylist = (playlistID, isPublic) => {
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
+  return supabase.from('playlists').update({
+    is_public: isPublic,
+  }).match({
+    id: playlistID,
+  });
+};
+
 export const createPlaylist = (name, isPublic) => {
   if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
   return supabase.from('playlists').insert([
