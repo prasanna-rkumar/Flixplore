@@ -6,6 +6,7 @@ import { getPlaylistMovies } from '../../../utils/dbHelper';
 import API, { END_POINTS } from '../../../tmdb-api';
 import SEO from '../../../components/SEO';
 import serverSupabase from '../../../utils/initSecretSupabase';
+import Header from '../../../components/Header';
 
 const PlaylistMovies = ({ id, playlistName }) => {
   const [playlistMovies, setPlaylistMovies] = useState([]);
@@ -21,6 +22,7 @@ const PlaylistMovies = ({ id, playlistName }) => {
       <SEO
         title={playlistName}
       />
+      <Header search={false} />
       <main className="relative py-4 px-3 items-start max-w-screen-2xl m-auto xl:px-16 mt-2">
         <h1 className="text-3xl text-white font-bold ">{playlistName}</h1>
         <div className="mt-8 max-w-5xl mx-auto px-0 md:px-4">
@@ -86,12 +88,12 @@ export async function getServerSideProps({ req, res, params }) {
   const { error, data } = await serverSupabase.from('playlists')
     .select()
     .match({ id: playlistID })
-    .or(`is_public.eq.true,user_id.eq.${user?.id}`)
+    .or(`is_public.eq.true${user !== null ? `,user_id.eq.${user?.id}` : ''}`)
     .single();
 
   if (error || !data || !data.id) {
     res.statusCode = 302;
-    res.setHeader('Location', '/');
+    res.setHeader('Location', '/login');
   }
 
   return {
