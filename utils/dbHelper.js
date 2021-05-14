@@ -39,12 +39,13 @@ export const getPlaylists = () => {
   `).match({ user_id: user().id });
 };
 
-export const createPlaylist = (name) => {
+export const createPlaylist = (name, isPublic) => {
   if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
   return supabase.from('playlists').insert([
     {
       user_id: user().id,
       playlist_name: name,
+      is_public: isPublic,
     },
   ]);
 };

@@ -13,7 +13,7 @@ const NewPlaylistForm = ({ closeModal }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    createPlaylist(playlistName).then(({ error }) => {
+    createPlaylist(playlistName, isPublic).then(({ error }) => {
       setPlaylistName('');
       if (error) {
         if (error.message.contains('playlists_playlist_name_check')) {
@@ -49,7 +49,7 @@ const NewPlaylistForm = ({ closeModal }) => {
         <h1 className="text-3xl font-bold mb-4">Create new Playlist</h1>
         <form onSubmit={onSubmit} className="w-full h-full">
           <div className="px-4">
-            <div className="flex hidden flex-col gap-1">
+            <div className="flex flex-col gap-1">
               <span className="text-gray-500 font-medium text-xs uppercase tracking-wide">Public Playlist</span>
               <Switch checked={isPublic} onChange={(checked) => setPublic(checked)} />
             </div>
