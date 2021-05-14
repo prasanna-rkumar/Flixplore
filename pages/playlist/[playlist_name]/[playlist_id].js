@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import propTypes from 'prop-types';
 import { useQuery } from 'react-query';
-import supabase from '../../../utils/initSupabase';
 import { getPlaylistMovies } from '../../../utils/dbHelper';
 import { SearchTile } from '../../../components/SearchBar/SearchResults';
 import API, { END_POINTS } from '../../../tmdb-api';
 import SEO from '../../../components/SEO';
+import serverSupabase from '../../../utils/initSecretSupabase';
 
 const PlaylistMovies = ({ id, playlistName }) => {
   const [playlistMovies, setPlaylistMovies] = useState([]);
@@ -65,9 +65,14 @@ Wrapper.propTypes = {
   movie: propTypes.instanceOf(Object).isRequired,
 };
 
-export async function getServerSideProps({ res, params }) {
+export async function getServerSideProps({ req, res, params }) {
   const { playlist_id: playlistID } = params;
-  const { error, data } = await supabase.from('playlists').select().match({ id: playlistID }).single();
+  const { user } = await serverSupabase.auth.api.getUserByCookie(req);
+  const { error, data } = await serverSupabase.from('playlists')
+    .select()
+    .match({ id: playlistID })
+    .or(`is_public.eq.true,user_id.eq.${user?.id}`)
+    .single();
 
   if (error || !data || !data.id) {
     res.statusCode = 302;
