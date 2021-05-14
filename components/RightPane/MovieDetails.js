@@ -92,7 +92,7 @@ MovieDetails.defaultProps = {
   movieId: 0,
 };
 
-const SecondaryDetail = ({ label, value, children }) => (
+export const SecondaryDetail = ({ label, value, children }) => (
   <div className="flex-1">
     <h3 className="text-lg text-gray-500 font-semibold">{label}</h3>
     <div>
