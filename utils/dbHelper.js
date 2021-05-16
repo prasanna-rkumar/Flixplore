@@ -32,6 +32,7 @@ export const getPlaylists = () => {
   return supabase.from('playlists').select(`
     id,
     playlist_name,
+    is_public,
     playlist_movies (
       id,
       tmdb_id
