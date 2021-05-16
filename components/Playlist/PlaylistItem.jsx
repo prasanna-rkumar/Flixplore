@@ -13,11 +13,12 @@ import { updatePlaylist, deletePlaylist } from '../../utils/dbHelper';
 
 const PlaylistItem = ({ playlist }) => {
   const [isPublic, setIsPublic] = useState(playlist.is_public);
+  const url = `/playlist/${playlist.playlist_name}/${playlist.id}`.replaceAll(' ', '-');
 
   return (
     <Link
       key={playlist.id}
-      href={`/playlist/${playlist.playlist_name}/${playlist.id}`}
+      href={url}
     >
       <div className="transform group transition-transform cursor-pointer hover:-translate-y-3 col-span-1 relative rounded-lg overflow-hidden flex flex-col items-center justify-between bg-pink-600">
         <div
@@ -72,7 +73,7 @@ const PlaylistItem = ({ playlist }) => {
               </div>,
               <CopyToClipboard
                 onCopy={() => toast.dark('Playlist link copied to Clipboard!')}
-                text={`${window.location.origin}/playlist/${playlist.playlist_name.replaceAll(' ', '-')}/${playlist.id}`}
+                text={`${window.location.origin}/playlist/${url}/${playlist.id}`}
               >
                 <div className="flex items-center px-2">
                   <MdContentCopy size={22} />
