@@ -1,5 +1,5 @@
 import propTypes from 'prop-types';
-import CircularProgressIndicator from '../CircularProgressIndicator';
+import CircularProgressIndicator from '../shared/CircularProgressIndicator';
 import WatchItem from './WatchItem';
 
 const WatchList = ({ data }) => {
