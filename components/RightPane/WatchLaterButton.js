@@ -1,7 +1,7 @@
 /* eslint-disable react/forbid-prop-types */
 import propTypes from 'prop-types';
 import { MdWatchLater } from 'react-icons/md';
-import Button from '../Button';
+import Button from '../shared/Button';
 
 const WatchLaterButton = ({ movieData, error, addMovie }) => {
   if (!movieData || error) {

@@ -6,7 +6,7 @@ import { getPlaylistMovies } from '../../../utils/dbHelper';
 import API, { END_POINTS } from '../../../tmdb-api';
 import SEO from '../../../components/SEO';
 import serverSupabase from '../../../utils/initSecretSupabase';
-import Header from '../../../components/Header';
+import Header from '../../../components/shared/Header';
 
 const PlaylistMovies = ({ id, playlistName }) => {
   const [playlistMovies, setPlaylistMovies] = useState([]);

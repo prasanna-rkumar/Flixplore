@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import Header from '../components/Header';
+import Header from '../components/shared/Header';
 import LeftPane from '../components/LeftPane';
 import RightPane from '../components/RightPane';
 import SEO from '../components/SEO';

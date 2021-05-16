@@ -1,4 +1,4 @@
-import Header from '../components/Header';
+import Header from '../components/shared/Header';
 import SEO from '../components/SEO';
 import { useMyWatchList } from '../utils/dbHelper';
 import FilterOptions from '../components/WatchList/FilterOptions';

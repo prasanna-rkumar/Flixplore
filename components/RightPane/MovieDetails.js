@@ -5,10 +5,10 @@ import { useQuery } from 'react-query';
 import { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import API, { END_POINTS } from '../../tmdb-api';
-import CircularProgressIndicator from '../CircularProgressIndicator';
+import CircularProgressIndicator from '../shared/CircularProgressIndicator';
 import WatchBadge from './WatchBadge';
 import WatchLaterButton from './WatchLaterButton';
-import Button from '../Button';
+import Button from '../shared/Button';
 import { useSelectedMovieStatus } from '../../utils/dbHelper';
 import PlaylistsDropdown from './PlaylistsDropdown';
 

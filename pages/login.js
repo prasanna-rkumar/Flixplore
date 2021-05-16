@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import supabase from '../utils/initSupabase';
 import { AuthContext } from '../context/AuthContext';
 import SEO from '../components/SEO';
-import Header from '../components/Header';
+import Header from '../components/shared/Header';
 
 const SocialLoginButton = ({ Icon, label, provider }) => {
   const { signIn } = useContext(AuthContext);

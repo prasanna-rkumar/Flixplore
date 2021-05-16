@@ -6,11 +6,11 @@ import propTypes from 'prop-types';
 import MovieTile from './MovieTile';
 import API, { END_POINTS } from '../../tmdb-api';
 import { HomePageContext } from '../../context/HomePageContext';
-import CircularProgressIndicator from '../CircularProgressIndicator';
+import CircularProgressIndicator from '../shared/CircularProgressIndicator';
 import GenreDropdown from './GenreDropdown';
 import useDiscoverFilterStore from '../../store/DiscoverFilterStore';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import Button from '../Button';
+import Button from '../shared/Button';
 
 const LeftPane = () => {
   const { listVisibility } = useContext(HomePageContext);

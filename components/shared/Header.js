@@ -3,10 +3,10 @@ import propTypes from 'prop-types';
 import { useContext } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { RiLogoutCircleRLine } from 'react-icons/ri';
-import { AuthContext } from '../context/AuthContext';
-import { SearchProvider } from '../context/SearchContext';
-import SearchBar from './SearchBar';
-import Menu from './shared/Menu';
+import { AuthContext } from '../../context/AuthContext';
+import { SearchProvider } from '../../context/SearchContext';
+import SearchBar from '../SearchBar';
+import Menu from './Menu';
 
 const Header = ({ search }) => (
   <div className="sticky top-0 z-40 text-white px-4 border-b-2 border-gray-500 border-opacity-50 appbar py-1">

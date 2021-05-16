@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import Button from '../components/Button';
-import Header from '../components/Header';
+import Button from '../components/shared/Button';
+import Header from '../components/shared/Header';
 import SEO from '../components/SEO';
 import supabase from '../utils/initSupabase';
 import NewPlaylistForm from '../components/Playlist/NewPlaylist';
