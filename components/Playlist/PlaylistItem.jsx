@@ -73,7 +73,7 @@ const PlaylistItem = ({ playlist }) => {
               </div>,
               <CopyToClipboard
                 onCopy={() => toast.dark('Playlist link copied to Clipboard!')}
-                text={`${window.location.origin}/playlist/${url}/${playlist.id}`}
+                text={`${window.location.origin}${url}`}
               >
                 <div className="flex items-center px-2">
                   <MdContentCopy size={22} />
