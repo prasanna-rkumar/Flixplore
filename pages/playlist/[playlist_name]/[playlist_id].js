@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import propTypes from 'prop-types';
 import { useQuery } from 'react-query';
 import Link from 'next/link';
+import { FiShare2 } from 'react-icons/fi';
+import { IoLogoTwitter } from 'react-icons/io';
 import { getPlaylistMovies } from '../../../utils/dbHelper';
 import API, { END_POINTS } from '../../../tmdb-api';
 import SEO from '../../../components/SEO';
@@ -24,10 +26,25 @@ const PlaylistMovies = ({ id, playlistName }) => {
       />
       <Header search={false} />
       <main className="relative py-4 px-3 items-start max-w-screen-2xl m-auto xl:px-16 mt-2">
-        <h1 className="text-3xl text-white font-bold ">{playlistName}</h1>
+        <h1 className="text-3xl text-white font-bold text-center">{playlistName}</h1>
+        <div className="flex gap-3 justify-center items-center mt-2">
+          <a target="_blank" rel="noreferrer noopener" href={`https://twitter.com/intent/tweet?url=${window.location.href}&text=Check out this curated list of ${playlistName}`}>
+            <IoLogoTwitter size={24} color="#00acee" />
+          </a>
+          <button
+            type="button"
+            onClick={() => navigator.share({
+              title: 'Flixplore',
+              text: playlistName,
+              url: window.location.href,
+            })}
+          >
+            <FiShare2 size={24} className="text-gray-200" />
+          </button>
+        </div>
         <div className="mt-8 max-w-5xl mx-auto px-0 md:px-4">
           {playlistMovies.map((movie) => (
-            <Wrapper movie={movie} />
+            <Wrapper key={movie.tmdb_id} movie={movie} />
           ))}
         </div>
       </main>
@@ -51,7 +68,7 @@ const Wrapper = ({ movie }) => {
   const { status, data, error } = useQuery([END_POINTS.movie, tmdbID], fetchMovieDetails);
 
   if (status === 'loading') {
-    return <>loading</>;
+    return <></>;
   }
 
   if (error) {
