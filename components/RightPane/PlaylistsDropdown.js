@@ -3,16 +3,21 @@ import { useEffect, useState } from 'react';
 import { MdPlaylistAdd } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { addMovieToPlaylist, getPlaylists } from '../../utils/dbHelper';
+import supabase from '../../utils/initSupabase';
 import Menu from '../shared/Menu';
 
 const PlaylistsDropdown = ({ movieID }) => {
   const [playlists, setPlaylists] = useState([]);
+  const user = supabase.auth.user();
 
   useEffect(() => {
+    if (!user) return;
     getPlaylists().then(({ data }) => {
       setPlaylists(data);
     });
-  }, []);
+  }, [user]);
+
+  if (!user) return <></>;
 
   return (
     <Menu
