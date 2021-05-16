@@ -2,7 +2,7 @@ import propTypes from 'prop-types';
 import { useCallback } from 'react';
 import { useQuery } from 'react-query';
 import API, { END_POINTS } from '../../tmdb-api';
-import CircularProgressIndicator from '../CircularProgressIndicator';
+import CircularProgressIndicator from './CircularProgressIndicator';
 
 const MoviePosterFromAPI = ({ tmdbId }) => {
   const fetchMoviePosters = useCallback(() => API.image({
