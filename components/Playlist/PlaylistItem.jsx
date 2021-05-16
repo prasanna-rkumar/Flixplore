@@ -3,14 +3,17 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { AiFillDelete } from 'react-icons/ai';
 import { FiMoreVertical } from 'react-icons/fi';
+import { MdContentCopy } from 'react-icons/md';
 import Switch from 'react-switch';
 import { toast } from 'react-toastify';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import MoviePosterFromAPI from '../shared/MoviePosterFromAPI';
 import Menu from '../shared/Menu';
 import { updatePlaylist, deletePlaylist } from '../../utils/dbHelper';
 
 const PlaylistItem = ({ playlist }) => {
   const [isPublic, setIsPublic] = useState(playlist.is_public);
+
   return (
     <Link
       key={playlist.id}
@@ -47,7 +50,7 @@ const PlaylistItem = ({ playlist }) => {
         >
           <Menu
             direction="left"
-            left={-175}
+            left={-140}
             title={<FiMoreVertical size={24} />}
             menuItems={[
               <div className="flex flex-row justify-start items-center">
@@ -67,6 +70,15 @@ const PlaylistItem = ({ playlist }) => {
                 />
                 {isPublic ? 'Public' : 'Private'}
               </div>,
+              <CopyToClipboard
+                onCopy={() => toast.dark('Playlist link copied to Clipboard!')}
+                text={`${window.location.origin}/playlist/${playlist.playlist_name.replaceAll(' ', '-')}/${playlist.id}`}
+              >
+                <div className="flex items-center px-2">
+                  <MdContentCopy size={22} />
+                  Copy link
+                </div>
+              </CopyToClipboard>,
               <div className="flex items-center px-2">
                 <AiFillDelete
                   className="text-red-500"
