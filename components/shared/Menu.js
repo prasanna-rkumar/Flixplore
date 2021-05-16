@@ -43,7 +43,7 @@ const Menu = ({
         {title}
       </button>
       {show && (
-        <div style={direction === 'left' ? { left } : { right: 0 }} className="origin-top-right absolute z-50 w-48 py-2 mt-1 bg-menu-bg rounded shadow-md">
+        <div style={direction === 'left' ? { left } : { right: 0 }} className="origin-top-right absolute z-50 w-40 py-2 mt-1 bg-menu-bg rounded shadow-md">
           {menuItems.map((menuItem) => (
             <div
               tabIndex={0}
