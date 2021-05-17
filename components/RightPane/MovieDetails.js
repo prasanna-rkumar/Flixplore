@@ -30,8 +30,9 @@ const MovieDetails = memo(({ movieId }) => {
 
   if (status === 'error') {
     return (
-      <span>
+      <span className="text-gray-400">
         Error:
+        {' '}
         {error.message}
       </span>
     );
