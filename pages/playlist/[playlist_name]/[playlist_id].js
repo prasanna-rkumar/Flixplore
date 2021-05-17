@@ -3,15 +3,18 @@ import propTypes from 'prop-types';
 import { FiShare2 } from 'react-icons/fi';
 import { IoLogoTwitter } from 'react-icons/io';
 import { toast } from 'react-toastify';
-import { getPlaylistMovies } from '../../../utils/dbHelper';
+import Link from 'next/link';
+import { deleteMovieFromPlaylist, getPlaylistMovies } from '../../../utils/dbHelper';
 import SEO from '../../../components/SEO';
 import serverSupabase from '../../../utils/initSecretSupabase';
 import Header from '../../../components/shared/Header';
 import PlaylistMovieItem from '../../../components/Playlist/PlaylistMovieItem';
+import supabase from '../../../utils/initSupabase';
 
 const PlaylistMovies = ({ id, playlistName, isPublic }) => {
   const [playlistMovies, setPlaylistMovies] = useState([]);
   const [shareableURL, setURL] = useState('');
+  const user = supabase.auth.user();
 
   useEffect(() => {
     if (window) setURL(decodeURIComponent(window.location.href).replaceAll(' ', '-'));
@@ -66,10 +69,39 @@ const PlaylistMovies = ({ id, playlistName, isPublic }) => {
           </button>
         </div>
         <div className="mt-8 max-w-5xl mx-auto px-0 md:px-4">
-          {playlistMovies.map((movie) => (
-            <PlaylistMovieItem key={movie.tmdb_id} movie={movie} />
+          {playlistMovies.map((movie, index) => (
+            <PlaylistMovieItem
+              key={movie.tmdb_id}
+              movie={movie}
+              onDelete={() => {
+                // eslint-disable-next-line no-alert
+                if (window.confirm('Are you sure want to delete')) {
+                  deleteMovieFromPlaylist(movie.tmdb_id, id).then((value) => {
+                    setPlaylistMovies((prevList) => {
+                      prevList.splice(index, 1);
+                      console.log(prevList);
+                      return [...prevList];
+                    });
+                    console.log(value);
+                  });
+                  toast.dark('Movie deleted from playlist');
+                }
+              }}
+            />
           ))}
         </div>
+        {playlistMovies.length === 0 && (
+          <div className="flex flex-col justify-center items-center gap-3">
+            <h3 className="text-2xl font-semibold mt-16 p-0.5 text-gray-400 text-center">😞 No movies in this playlist </h3>
+            {
+              user && (
+              <Link href="/">
+                <button className="mx-auto p-2 bg-pink-600 text-gray-100 px-4 rounded" type="button">Add Movies</button>
+              </Link>
+              )
+            }
+          </div>
+        )}
       </main>
     </>
   );

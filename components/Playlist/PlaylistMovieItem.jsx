@@ -3,11 +3,10 @@ import { useQuery } from 'react-query';
 import Link from 'next/link';
 import propTypes from 'prop-types';
 import { AiFillDelete } from 'react-icons/ai';
-import { toast } from 'react-toastify';
 
 import API, { END_POINTS } from '../../tmdb-api';
 
-const PlaylistMovieItem = ({ movie }) => {
+const PlaylistMovieItem = ({ movie, onDelete }) => {
   const tmdbID = movie.tmdb_id;
   const fetchMovieDetails = useCallback(() => API.movie({ movieId: tmdbID }), [
     tmdbID,
@@ -39,10 +38,7 @@ const PlaylistMovieItem = ({ movie }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              // eslint-disable-next-line no-alert
-              if (window.confirm('Are you sure want to delete')) {
-                toast.dark('Movie deleted from playlist');
-              }
+              onDelete();
             }}
             type="button"
           >
@@ -74,6 +70,7 @@ const PlaylistMovieItem = ({ movie }) => {
 
 PlaylistMovieItem.propTypes = {
   movie: propTypes.instanceOf(Object).isRequired,
+  onDelete: propTypes.func.isRequired,
 };
 
 export default PlaylistMovieItem;

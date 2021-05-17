@@ -16,6 +16,15 @@ const loginToast = () => toast.error((
 
 const user = () => supabase.auth.user();
 
+export const deleteMovieFromPlaylist = (movieID, playlistID) => {
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
+  return supabase.from('playlist_movies').delete().match({
+    user_id: user().id,
+    tmdb_id: movieID,
+    playlist_id: playlistID,
+  });
+};
+
 export const addMovieToPlaylist = (movieID, playlistID) => {
   if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
   return supabase.from('playlist_movies').insert({
