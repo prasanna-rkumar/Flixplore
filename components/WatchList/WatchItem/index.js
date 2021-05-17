@@ -9,9 +9,10 @@ import style from './WatchItem.module.css';
 import { deleteMovieFromWatchList, updateMovieWatchStatus } from '../../../utils/dbHelper';
 import MoviePosterFromAPI from '../../shared/MoviePosterFromAPI';
 
-const WatchItem = ({ movie }) => {
+const WatchItem = ({ movie, onChange }) => {
   const updateStatus = useCallback(
     () => {
+      onChange();
       updateMovieWatchStatus(movie.tmdb_id, !movie.is_seen)
         .then(() => {
           toast.success('Watch status changed successfully!');
@@ -22,6 +23,7 @@ const WatchItem = ({ movie }) => {
   );
 
   const deleteMovie = useCallback(() => {
+    onChange();
     deleteMovieFromWatchList(movie.tmdb_id)
       .then(() => toast.dark('Deleted from Watch List!'))
       .catch(() => toast.error('Something went wrong!'));
@@ -42,6 +44,7 @@ export default WatchItem;
 
 WatchItem.propTypes = {
   movie: propTypes.instanceOf(Object).isRequired,
+  onChange: propTypes.func.isRequired,
 };
 
 const WatchItemListTile = ({

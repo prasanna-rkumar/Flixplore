@@ -159,24 +159,17 @@ export const useSelectedMovieStatus = () => {
 
 export const useMyWatchList = () => {
   const [movies, setMovies] = useState();
-  const [renderCount, setRenderCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [filter, setFilter] = useState('ALL');
 
-  const handleChange = useCallback(() => {
-    setRenderCount((oldCount) => oldCount + 1);
-  }, [movies]);
-
-  useEffect(() => {
-    const mySubscription = supabase
-      .from(`watch_later:user_id=eq.${user().uid}`)
-      .on('UPDATE', handleChange)
-      .on('DELETE', handleChange)
-      .subscribe();
-
-    return (() => mySubscription.unsubscribe());
-  }, [movies]);
+  const handleChange = (index) => {
+    if (filter === 'ALL') return;
+    setMovies((prevMovies) => {
+      prevMovies.splice(index, 1);
+      return [...prevMovies];
+    });
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -185,9 +178,9 @@ export const useMyWatchList = () => {
     }).catch((e) => {
       setError(e);
     }).finally(() => setLoading(false));
-  }, [filter, renderCount]);
+  }, [filter]);
 
   return {
-    movies, error, filter, setFilter, loading,
+    movies, error, filter, setFilter, loading, handleChange,
   };
 };
