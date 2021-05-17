@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.7.1",
+    "@tailwindcss/line-clamp": "^0.2.0",
     "axios": "^0.21.1",
     "framer-motion": "^4.1.11",
     "immer": "^8.0.1",

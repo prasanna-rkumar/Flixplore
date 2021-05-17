@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin');
+const lineClampPlugin = require('@tailwindcss/line-clamp');
 
 module.exports = {
   purge: [],
@@ -26,6 +27,7 @@ module.exports = {
     },
   },
   plugins: [
+    lineClampPlugin,
     plugin(({ addUtilities }) => {
       const newUtilities = {
         '.filter-none': {

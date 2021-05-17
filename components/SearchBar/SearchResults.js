@@ -3,7 +3,6 @@ import { useQuery } from 'react-query';
 import propTypes from 'prop-types';
 import API, { END_POINTS } from '../../tmdb-api';
 import { SearchContext } from '../../context/SearchContext';
-import styles from './SearchBar.module.css';
 import useMoviesStore from '../../store/MovieStore';
 import { HomePageContext } from '../../context/HomePageContext';
 
@@ -66,7 +65,7 @@ export const SearchTile = memo(({ movie, onClick }) => (
         <span className="text-lg font-medium">{movie.title}</span>
         <span className="text-gray-400 text-sm font-normal">{movie.release_date}</span>
       </div>
-      <div className={`text-base text-gray-300 leading-tight  ${styles['truncate-3-lines']}`}>{movie.overview}</div>
+      <div className="text-base text-gray-300 leading-tight line-clamp-3">{movie.overview}</div>
     </div>
   </div>
 ));
