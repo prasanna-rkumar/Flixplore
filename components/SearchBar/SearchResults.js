@@ -1,6 +1,7 @@
 import { memo, useContext } from 'react';
 import { useQuery } from 'react-query';
 import propTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import API, { END_POINTS } from '../../tmdb-api';
 import { SearchContext } from '../../context/SearchContext';
 import useMoviesStore from '../../store/MovieStore';
@@ -8,6 +9,7 @@ import { HomePageContext } from '../../context/HomePageContext';
 
 const SearchResults = memo(({ searchTerm }) => {
   const { isInputFocus } = useContext(SearchContext);
+  const router = useRouter();
   const setSelectedMovie = useMoviesStore((zState) => zState.setSelectedMovie);
   const { openDetails } = useContext(HomePageContext);
   const fetchSearchResults = () => API.search(searchTerm);
@@ -29,6 +31,7 @@ const SearchResults = memo(({ searchTerm }) => {
           <SearchTile
             onClick={() => {
               setSelectedMovie(movie.id);
+              router.push(`/?movieID=${movie.id}`, undefined, { shallow: true });
               openDetails();
             }}
             key={movie.id}
