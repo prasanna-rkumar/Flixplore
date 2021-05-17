@@ -11,7 +11,7 @@ import MoviePosterFromAPI from '../shared/MoviePosterFromAPI';
 import Menu from '../shared/Menu';
 import { updatePlaylist, deletePlaylist } from '../../utils/dbHelper';
 
-const PlaylistItem = ({ playlist }) => {
+const PlaylistItem = ({ playlist, onDelete }) => {
   const [isPublic, setIsPublic] = useState(playlist.is_public);
   const url = `/playlist/${playlist.playlist_name}/${playlist.id}`.replaceAll(' ', '-');
 
@@ -86,6 +86,7 @@ const PlaylistItem = ({ playlist }) => {
                   size={24}
                   onClick={() => {
                     deletePlaylist(playlist.id).then(() => {
+                      onDelete();
                       toast.dark('Playlist deleted');
                     });
                   }}
@@ -105,6 +106,7 @@ const PlaylistItem = ({ playlist }) => {
 
 PlaylistItem.propTypes = {
   playlist: propTypes.instanceOf(Object).isRequired,
+  onDelete: propTypes.func.isRequired,
 };
 
 export default PlaylistItem;
