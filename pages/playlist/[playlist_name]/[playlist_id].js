@@ -16,10 +16,13 @@ const PlaylistMovies = ({ id, playlistName }) => {
 
   useEffect(() => {
     if (window) setURL(decodeURIComponent(window.location.href).replaceAll(' ', '-'));
+    if (id === 0) return;
     getPlaylistMovies(id).then(({ data }) => {
       setPlaylistMovies(data);
     });
   }, []);
+
+  if (id === 0) return null;
 
   return (
     <>
@@ -55,8 +58,13 @@ const PlaylistMovies = ({ id, playlistName }) => {
 };
 
 PlaylistMovies.propTypes = {
-  id: propTypes.number.isRequired,
-  playlistName: propTypes.string.isRequired,
+  id: propTypes.number,
+  playlistName: propTypes.string,
+};
+
+PlaylistMovies.defaultProps = {
+  id: 0,
+  playlistName: '',
 };
 
 export default PlaylistMovies;
@@ -104,17 +112,30 @@ Wrapper.propTypes = {
 export async function getServerSideProps({ req, res, params }) {
   const { playlist_id: playlistID } = params;
   const { user } = await serverSupabase.auth.api.getUserByCookie(req);
-  const { error, data } = await serverSupabase.from('playlists')
-    .select()
-    .match({ id: playlistID })
-    .or(`is_public.eq.true${user !== null ? `,user_id.eq.${user?.id}` : ''}`)
-    .single();
+
+  let query = serverSupabase.from('playlists').select().match({ id: playlistID });
+
+  if (user === null) {
+    query = query.match({
+      is_public: true,
+    });
+  } else {
+    query = query.match({
+      user_id: user.id,
+    });
+  }
+
+  const { error, data } = await query.single();
+
+  console.log(error, data);
 
   if (error || !data || !data.id) {
     res.statusCode = 302;
     res.setHeader('Location', '/login');
+    return {
+      props: {},
+    };
   }
-
   return {
     props: {
       id: data.id,
