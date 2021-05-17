@@ -1,5 +1,6 @@
 import { BsPlayFill } from 'react-icons/bs';
 import { AiFillStar } from 'react-icons/ai';
+import { FiExternalLink } from 'react-icons/fi';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
 import { memo, useCallback } from 'react';
@@ -61,6 +62,7 @@ const MovieDetails = memo(({ movieId }) => {
               <BsPlayFill size={20} className="inline relative right-0.5" style={{ top: -1 }} />
               {' '}
               Watch now
+              <FiExternalLink className="ml-1 inline" size={14} />
             </a>
           </Button>
           <WatchLaterButton movieData={movieData} error={supabaseError} addMovie={addMovie} />
