@@ -48,8 +48,9 @@ const PlaylistMovies = ({ id, playlistName: playlistNameProp, isPublic }) => {
                 onSubmit={(e) => {
                   e.preventDefault();
                   setEditingName(false);
-                  changePlaylistName(id, playlistName);
-                  toast.success(`Playlist named changed to ${playlistName}`);
+                  changePlaylistName(id, playlistName).then(() => {
+                    toast.success(`Playlist named changed to ${playlistName}`);
+                  });
                 }}
                 className="max-w-min inline"
               >
