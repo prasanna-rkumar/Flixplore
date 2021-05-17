@@ -31,7 +31,6 @@ const reducer = (state, action) => {
       state.isClosed = true;
       break;
     case 'resize':
-      console.log(state.isClosed);
       if (action.displayMedia === 'desktop' || state.isClosed) {
         state.listVisibility = 'block';
       } else if (action.displayMedia === 'mobile') {
