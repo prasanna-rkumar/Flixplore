@@ -11,7 +11,7 @@ const initialState = {
   detailsVisibility: 'hidden',
   listVisibility: 'block',
   pageYOffset: 0,
-  isClosed: false,
+  isClosed: true,
 };
 
 const reducer = (state, action) => {
@@ -24,12 +24,20 @@ const reducer = (state, action) => {
       if (action.displayMedia === 'mobile') {
         state.listVisibility = 'hidden';
       }
-      return;
+      break;
     case 'hideDetails':
       state.detailsVisibility = 'hidden';
       state.listVisibility = 'block';
       state.isClosed = true;
-      return;
+      break;
+    case 'resize':
+      console.log(state.isClosed);
+      if (action.displayMedia === 'desktop' || state.isClosed) {
+        state.listVisibility = 'block';
+      } else if (action.displayMedia === 'mobile') {
+        state.listVisibility = 'hidden';
+      }
+      break;
     default:
       throw new Error();
   }
@@ -58,8 +66,10 @@ export const HomePageProvider = ({ children }) => {
   useEffect(() => {
     if (width >= 1024) {
       displayMedia.current = 'desktop';
+      dispatch({ type: 'resize', displayMedia: displayMedia.current });
     } else {
       displayMedia.current = 'mobile';
+      dispatch({ type: 'resize', displayMedia: displayMedia.current });
     }
   }, [width]);
 
