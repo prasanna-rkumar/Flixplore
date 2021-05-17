@@ -107,8 +107,6 @@ export async function getServerSideProps({ req, res, params }) {
 
   const { error, data } = await query.single();
 
-  console.log(error, data);
-
   if (error || !data || !data.id) {
     res.statusCode = 302;
     res.setHeader('Location', '/login');
