@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import throttle from './throttle';
 
 export default function useWindowDimensions() {
   const [dimensions, setDimensions] = useState({});
@@ -11,7 +12,7 @@ export default function useWindowDimensions() {
 
     handleResize();
     window.addEventListener('load', () => handleResize);
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', throttle(handleResize, 250));
     return () => {
       window.removeEventListener('load', handleResize);
       window.removeEventListener('resize', handleResize);
