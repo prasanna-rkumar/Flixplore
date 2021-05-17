@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import { memo, useCallback, useContext } from 'react';
 import { HomePageContext } from '../../context/HomePageContext';
 import useMovieStore from '../../store/MovieStore';
 
 const MovieTile = memo(({ movie }) => {
+  const router = useRouter();
   const { setSelectedMovie, selectedMovieId } = useMovieStore((zState) => ({
     setSelectedMovie: zState.setSelectedMovie,
     selectedMovieId: zState.selectedMovieId,
@@ -11,6 +13,9 @@ const MovieTile = memo(({ movie }) => {
   const { openDetails } = useContext(HomePageContext);
   const movieTileClickAction = useCallback(() => {
     setSelectedMovie(movie.id);
+    router.push(`/?movieID=${movie.id}`, undefined, {
+      shallow: true,
+    });
     openDetails();
   }, [movie.id]);
 
