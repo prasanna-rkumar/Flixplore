@@ -25,6 +25,15 @@ export const deleteMovieFromPlaylist = (movieID, playlistID) => {
   });
 };
 
+export const changePlaylistName = (playlistID, playlistName) => {
+  if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
+  return supabase.from('playlists').update({
+    playlist_name: playlistName,
+  }).match({
+    id: playlistID,
+  });
+};
+
 export const addMovieToPlaylist = (movieID, playlistID) => {
   if (!user()) return Promise.reject(UNAUTHORIZED_ERROR);
   return supabase.from('playlist_movies').insert({

@@ -1,19 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import propTypes from 'prop-types';
 import { FiShare2 } from 'react-icons/fi';
 import { IoLogoTwitter } from 'react-icons/io';
+import { AiFillEdit } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
-import { deleteMovieFromPlaylist, getPlaylistMovies } from '../../../utils/dbHelper';
+import { changePlaylistName, deleteMovieFromPlaylist, getPlaylistMovies } from '../../../utils/dbHelper';
 import SEO from '../../../components/SEO';
 import serverSupabase from '../../../utils/initSecretSupabase';
 import Header from '../../../components/shared/Header';
 import PlaylistMovieItem from '../../../components/Playlist/PlaylistMovieItem';
 import supabase from '../../../utils/initSupabase';
 
-const PlaylistMovies = ({ id, playlistName, isPublic }) => {
+const PlaylistMovies = ({ id, playlistName: playlistNameProp, isPublic }) => {
   const [playlistMovies, setPlaylistMovies] = useState([]);
   const [shareableURL, setURL] = useState('');
+  const [isEditingName, setEditingName] = useState(false);
+  const [playlistName, setPlaylistName] = useState(playlistNameProp);
+  const playlistNameInputRef = useRef();
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -24,6 +28,10 @@ const PlaylistMovies = ({ id, playlistName, isPublic }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (isEditingName) playlistNameInputRef.current.focus();
+  }, [isEditingName]);
+
   if (id === 0) return null;
 
   return (
@@ -32,8 +40,36 @@ const PlaylistMovies = ({ id, playlistName, isPublic }) => {
         title={playlistName}
       />
       <Header search={false} />
-      <main className="relative py-4 px-3 items-start max-w-screen-2xl m-auto xl:px-16 mt-2">
-        <h1 className="text-3xl text-white font-bold text-center">{playlistName}</h1>
+      <main className="relative py-4 px-3 max-w-screen-2xl m-auto xl:px-16 mt-2">
+        <h1 className="text-3xl text-white font-bold text-center">
+          {
+            isEditingName ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setEditingName(false);
+                  changePlaylistName(id, playlistName).then((val) => {
+                    console.log(val);
+                  });
+                  toast.success(`Playlist named changed to ${playlistName}`);
+                }}
+                className="max-w-min inline"
+              >
+                <input ref={playlistNameInputRef} className="text-base text-black p-1 pl-2 rounded" type="text" value={playlistName} onChange={(e) => setPlaylistName(e.target.value)} />
+                <input type="submit" value="" className="invisible" />
+              </form>
+            ) : playlistName
+          }
+          <button
+            onClick={() => {
+              setEditingName((prevValue) => !prevValue);
+            }}
+            type="button"
+            className="ml-2"
+          >
+            <AiFillEdit size={24} className="inline text-pink-400" />
+          </button>
+        </h1>
         <div className="flex gap-3 justify-center items-center mt-2">
           <a
             target="_blank"
@@ -76,13 +112,11 @@ const PlaylistMovies = ({ id, playlistName, isPublic }) => {
               onDelete={() => {
                 // eslint-disable-next-line no-alert
                 if (window.confirm('Are you sure want to delete')) {
-                  deleteMovieFromPlaylist(movie.tmdb_id, id).then((value) => {
+                  deleteMovieFromPlaylist(movie.tmdb_id, id).then(() => {
                     setPlaylistMovies((prevList) => {
                       prevList.splice(index, 1);
-                      console.log(prevList);
                       return [...prevList];
                     });
-                    console.log(value);
                   });
                   toast.dark('Movie deleted from playlist');
                 }
@@ -95,9 +129,9 @@ const PlaylistMovies = ({ id, playlistName, isPublic }) => {
             <h3 className="text-2xl font-semibold mt-16 p-0.5 text-gray-400 text-center">😞 No movies in this playlist </h3>
             {
               user && (
-              <Link href="/">
-                <button className="mx-auto p-2 bg-pink-600 text-gray-100 px-4 rounded" type="button">Add Movies</button>
-              </Link>
+                <Link href="/">
+                  <button className="mx-auto p-2 bg-pink-600 text-gray-100 px-4 rounded" type="button">Add Movies</button>
+                </Link>
               )
             }
           </div>
